@@ -2,33 +2,11 @@ import cv2
 import numpy as np
 from recognition import img2arr
 from klotski import klotski
-from tensorflow import keras
+# from tensorflow import keras
+import tensorflow.python.keras as keras
 
+import uiautomator2 as u2
 
-# 读取图像
-image = cv2.imread('game2.jpg')
-numbers = img2arr.img2arr(image)
-print(numbers)
-
-steps = klotski.get_path(numbers)
-print(steps)
-
-for step in steps:
-    index0 = step[0]
-    index1 = step[1]
-
-    a = numbers[index0]
-    b = numbers[index1]
-
-    click_index = index0
-    if a == 8:
-        click_index = index1
-
-    numbers[index0] = numbers[index1]
-    numbers[index1] = a
-
-    print(click_index)
-    print(numbers)
 
 def get_point(index):
     start_x = 120
@@ -50,6 +28,43 @@ def get_point(index):
     ratio_y = (center_y - start_y) / (end_y - start_y)
 
     return ratio_x, ratio_y
+
+
+# d = u2.connect() # connect to device
+# print(d.info)
+# print(d.serial) #BEWOOZNBYLFYQWHA
+# d.screenshot("game2.jpg")
+# 读取图像
+# image = cv2.imread('game2.jpg')
+image = cv2.imread('gameimg/err2.jpg')
+numbers = img2arr.img2arr(image)
+print(numbers)
+
+steps = klotski.get_path(numbers)
+print(steps)
+
+click_indexs = []
+for step in steps:
+    index0 = step[0]
+    index1 = step[1]
+
+    a = numbers[index0]
+    b = numbers[index1]
+
+    click_index = index0
+    if a == 8:
+        click_index = index1
+
+    numbers[index0] = numbers[index1]
+    numbers[index1] = a
+
+    print(click_index)
+    print(numbers)
+    click_indexs.append(click_index)
+
+for click_index in click_indexs:
+    ratio_x, ratio_y = get_point(click_index)
+    d.click(ratio_x,ratio_y)
 
 # # 调用函数并打印结果示例
 # index = 1
