@@ -58,7 +58,7 @@ def do_flow():
     # 点拼图
     d.click(0.296, 0.497)
     # 暂停程序执行1秒
-    time.sleep(5.5)
+    time.sleep(6)
     print("screenshot")
     d.screenshot("game2.jpg")
     # 读取图像
