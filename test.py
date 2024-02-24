@@ -21,5 +21,8 @@ image = cv2.imread('gameimg/99/99.jpg')
 numbers = img2arr.img2arr(image,9)
 print(numbers)
 
-numbers = sorted(numbers)
-print(numbers)
+# numbers = sorted(numbers)
+# print(numbers)
+
+steps = klotski.get_path(numbers)
+print(steps)
