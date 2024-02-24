@@ -3,8 +3,8 @@ import numpy as np
 
 # 读取图像
 # image = cv2.imread('errgameimg/game2.jpg')
-image = cv2.imread('errgameimg/number_0e67ce2a-8154-4f7c-ab1e-8faa23900a8d.jpg')
-# image = cv2.imread('gameimg/99/99.jpg')
+# image = cv2.imread('errgameimg/number_0e67ce2a-8154-4f7c-ab1e-8faa23900a8d.jpg')
+image = cv2.imread('gameimg/99/99.jpg')
 
 # 获取图像宽度和高度
 height, width, _ = image.shape
@@ -45,7 +45,7 @@ end_y = 21
 roi_width = width - start_x - end_x
 roi_height = height - start_y - end_y
 
-split_count = 3
+split_count = 9
 # one_w = 710
 # one_h = 344
 one_w = (roi_width) // split_count
@@ -102,10 +102,17 @@ for i in range(split_count):
         # 提取当前小区域的图像
         half_size = 28  # 因为我们想要20像素，所以取一半的大小
         # 提取中心数字图像
-        number_image = image[center_y: center_y + half_size, center_x -14: center_x + 14]
+        number_image = image[center_y: center_y + half_size, center_x -14: center_x + 28]
+
+        # 计算分割位置
+        split_point = 21
+        # 分割number_image
+        part1 = number_image[:, :split_point]
+        part2 = number_image[:, split_point:]
 
         # 存储提取的中心数字图像
-        number_images.append(number_image)
+        number_images.append(part1)
+        number_images.append(part2)
 
 for idx, num_img in enumerate(number_images):
     cv2.imwrite(f'temp/number_{idx}.jpg', num_img)  # 保存图像

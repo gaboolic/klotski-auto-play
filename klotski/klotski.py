@@ -24,7 +24,7 @@ def bfs(start_state, goal_state):
         if current_state == goal_state:
             return path
 
-        zero_index = current_state.index(8)
+        zero_index = current_state.index(99)
 
         for move_to in [1, -1, 3, -3]:
             new_index = zero_index + move_to
@@ -41,6 +41,7 @@ def bfs(start_state, goal_state):
     return None
 
 def get_path(start_state):
+    goal_state = sorted(start_state)
     path = bfs(start_state, goal_state)
 
     swaps = []

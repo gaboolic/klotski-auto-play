@@ -6,7 +6,21 @@ from tensorflow import keras
 
 # 加载模型
 model = keras.models.load_model('recognition/lenet5.keras')
+judge_number_model = keras.models.load_model('recognition/train_number.keras')
 
+
+def judge_number(image):
+    resize_img = cv2.resize(image, (28, 28))  # 调整大小为28x28
+    image = resize_img / 255.0  # 归一化
+    # 添加批次维度
+    image = np.expand_dims(image, axis=0)
+
+    # 进行预测
+    predictions = judge_number_model.predict(image)
+    # 打印预测结果
+    predicted_label = np.argmax(predictions[0])
+    cv2.imwrite(f'temp/judge_number_{predicted_label}_{time.time()}.jpg', resize_img)  # 保存图像
+    return predicted_label
 
 def one_img(image):
     # 计算平均像素值
@@ -17,9 +31,9 @@ def one_img(image):
     unique_values = cv2.countNonZero(binary_image)
 
     if average_pixel_value < 10:
-        return 8
+        return 99
     elif average_pixel_value > 245:
-        return 8
+        return 99
 
     resize_img = cv2.resize(image, (28, 28))  # 调整大小为28x28
     image = resize_img / 255.0  # 归一化
@@ -34,7 +48,7 @@ def one_img(image):
     return predicted_label
 
 
-def img2arr(image):
+def img2arr(image,split_count):
     # 获取图像宽度和高度
     height, width, _ = image.shape
 
@@ -74,7 +88,6 @@ def img2arr(image):
     roi_width = width - start_x - end_x
     roi_height = height - start_y - end_y
 
-    split_count = 3
     # one_w = 710
     # one_h = 344
     one_w = (roi_width) // split_count
@@ -95,8 +108,8 @@ def img2arr(image):
     image = cv2.morphologyEx(image, cv2.MORPH_ERODE, kernel, iterations=2)
 
     number_images = []
-    for i in range(3):
-        for j in range(3):
+    for i in range(split_count):
+        for j in range(split_count):
             # 计算当前小区域的起始坐标
             start_x = j * (one_w)
             start_y = i * (one_h)
@@ -108,12 +121,25 @@ def img2arr(image):
             # 提取当前小区域的图像
             half_size = 28  # 因为我们想要20像素，所以取一半的大小
             # 提取中心数字图像
-            number_image = image[center_y: center_y + half_size, center_x - 14: center_x + 14]
+            number_image = image[center_y: center_y + half_size, center_x - 14: center_x + 28]
 
             # 存储提取的中心数字图像
             number_images.append(number_image)
 
     numbers = []
     for idx, num_img in enumerate(number_images):
-        numbers.append(one_img(num_img))
+        # 计算分割位置
+        split_point = 21
+        # 分割number_image
+        part1 = num_img[:, :split_point]
+        part2 = num_img[:, split_point:]
+
+        num1 = one_img(part1)
+        number = num1
+        judge_number_res = judge_number(part2)
+        if judge_number_res:
+            num2 = one_img(part2)
+            number = number*10 + num2
+        numbers.append(number)
+        cv2.imwrite(f'temp/number_{number}.jpg', num_img)  # 保存图像
     return numbers

@@ -17,7 +17,9 @@ import uiautomator2 as u2
 
 # 读取图像
 # image = cv2.imread('errgameimg/number_2880c950-3305-4b17-afd1-5b09acbf620f.jpg')
-image = cv2.imread('errgameimg/number_0dca5179-233c-453b-9689-3bf6a0c8084f.jpg')
-image = cv2.imread('game2.jpg')
-numbers = img2arr.img2arr(image)
+image = cv2.imread('gameimg/99/99.jpg')
+numbers = img2arr.img2arr(image,9)
+print(numbers)
+
+numbers = sorted(numbers)
 print(numbers)

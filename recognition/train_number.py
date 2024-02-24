@@ -16,10 +16,9 @@ def translate_image(image, tx_range, ty_range):
 
 train_images = []
 train_labels = []
-for i in range(10):
+for i in range(2):
     # 读取图像并进行预处理
-    path = f'../template/{i}/'
-    print(path)
+    path = f'../judge_number/{i}/'
     # 读取path下所有图片
     files = os.listdir(path)
     # 筛选出所有以'.jpg'或'.png'结尾的文件
@@ -44,10 +43,10 @@ train_images = np.array(train_images)
 train_labels = np.array(train_labels)
 
 # 加载模型
-model = keras.models.load_model('lenet5.keras')
+model = keras.models.load_model('train_number.keras')
 
 # 训练模型
 model.fit(train_images, train_labels, epochs=20)
 
 # 保存模型
-model.save('lenet5.keras')
+model.save('train_number.keras')
