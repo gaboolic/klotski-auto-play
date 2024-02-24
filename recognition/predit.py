@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # 加载模型
-model = keras.models.load_model('lenet5.h5')
+model = keras.models.load_model('lenet5.keras')
 
 # 读取图像并进行预处理
 image = cv2.imread('../number_0.jpg', cv2.IMREAD_GRAYSCALE)  # 以灰度图像方式读取

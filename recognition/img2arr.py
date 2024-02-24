@@ -1,9 +1,11 @@
+import time
+
 import cv2
 import numpy as np
 from tensorflow import keras
 
 # 加载模型
-model = keras.models.load_model('recognition/lenet5.h5')
+model = keras.models.load_model('recognition/lenet5.keras')
 
 
 def one_img(image):
@@ -19,8 +21,8 @@ def one_img(image):
     elif average_pixel_value > 245:
         return 8
 
-    image = cv2.resize(image, (28, 28))  # 调整大小为28x28
-    image = image / 255.0  # 归一化
+    resize_img = cv2.resize(image, (28, 28))  # 调整大小为28x28
+    image = resize_img / 255.0  # 归一化
     # 添加批次维度
     image = np.expand_dims(image, axis=0)
 
@@ -28,17 +30,55 @@ def one_img(image):
     predictions = model.predict(image)
     # 打印预测结果
     predicted_label = np.argmax(predictions[0])
+    cv2.imwrite(f'temp/predict_{predicted_label}_{time.time()}.jpg', resize_img)  # 保存图像
     return predicted_label
 
 
 def img2arr(image):
-    one_w = 710
-    one_h = 344
+    # 获取图像宽度和高度
+    height, width, _ = image.shape
+
+    # 定义白色像素的阈值
+    white_threshold = 0.8 * height
+
+    # 初始化白色竖线宽度总和
+    white_line_width_sum = 0
+
+    # 从右到左，从上到下遍历图像
+    for x in range(width - 1, width - 150, -1):
+        white_pixel_count = 0
+        for y in range(height):
+            if (image[y, x] == 255).all():
+                white_pixel_count += 1
+        if white_pixel_count >= white_threshold:
+            white_line_width_sum += 1
+
+    print("白色竖线总宽度：", white_line_width_sum)
+
+    width = 2400
+    height = 1080
+
+    # 107 21
+    # 13 2
+    # 15 2
+    # 132 21
+    # 左边120 右边147 下面黑条21
+    # 小图236 113
+    # 小图236 114
     start_x = 120
     start_y = 23
+    # end_x = 132
+    end_x = white_line_width_sum
+    end_y = 21
 
-    width = one_w * 3  # 区域宽度
-    height = one_h * 3  # 区域高度
+    roi_width = width - start_x - end_x
+    roi_height = height - start_y - end_y
+
+    split_count = 3
+    # one_w = 710
+    # one_h = 344
+    one_w = (roi_width) // split_count
+    one_h = (roi_height) // split_count
 
     image = image[start_y:start_y + height, start_x:start_x + width]
     ori_image = image
@@ -47,8 +87,8 @@ def img2arr(image):
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # 对图像进行二值化处理
-    # ret, image = cv2.threshold(image, 240, 255, cv2.THRESH_BINARY )
-    ret, image = cv2.threshold(image, 254, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    ret, image = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY )
+    # ret, image = cv2.threshold(image, 254, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     # 对图像进行形态学操作（可选）
     kernel = np.ones((1, 1), np.uint8)
@@ -58,8 +98,8 @@ def img2arr(image):
     for i in range(3):
         for j in range(3):
             # 计算当前小区域的起始坐标
-            start_x = j * one_w
-            start_y = i * one_h
+            start_x = j * (one_w)
+            start_y = i * (one_h)
 
             # 计算当前小区域的中心坐标
             center_x = start_x + one_w // 2

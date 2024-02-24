@@ -26,7 +26,7 @@ x_train, x_test = x_train / 255.0, x_test / 255.0
 #               loss='sparse_categorical_crossentropy',
 #               metrics=['accuracy'])
 # 加载模型
-model = keras.models.load_model('lenet5.h5')
+model = keras.models.load_model('lenet5.keras')
 # 训练模型
 # model.fit(x_train, y_train, epochs=5)
 

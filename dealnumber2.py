@@ -1,3 +1,5 @@
+import time
+import uuid
 import cv2
 import numpy as np
 from recognition import img2arr
@@ -30,43 +32,83 @@ def get_point(index):
     return ratio_x, ratio_y
 
 
-# d = u2.connect() # connect to device
-# print(d.info)
-# print(d.serial) #BEWOOZNBYLFYQWHA
-# d.screenshot("game2.jpg")
-# 读取图像
-# image = cv2.imread('game2.jpg')
-image = cv2.imread('gameimg/err2.jpg')
-numbers = img2arr.img2arr(image)
-print(numbers)
+d = u2.connect() # connect to device
+print(d.info)
+print(d.serial) #BEWOOZNBYLFYQWHA
 
-steps = klotski.get_path(numbers)
-print(steps)
 
-click_indexs = []
-for step in steps:
-    index0 = step[0]
-    index1 = step[1]
+def do_flow():
+    # 点npc
+    print("点npc")
+    d.click(0.526, 0.28)
+    time.sleep(0.5)
 
-    a = numbers[index0]
-    b = numbers[index1]
+    # d1
+    d.click(0.526, 0.28)
+    time.sleep(0.5)
 
-    click_index = index0
-    if a == 8:
-        click_index = index1
+    d.click(0.526, 0.28)
+    time.sleep(0.5)
 
-    numbers[index0] = numbers[index1]
-    numbers[index1] = a
+    d.click(0.526, 0.28)
+    d.click(0.526, 0.28)
+    time.sleep(1)
 
-    print(click_index)
+    print("点拼图")
+    # 点拼图
+    d.click(0.296, 0.497)
+    # 暂停程序执行1秒
+    time.sleep(5.5)
+    print("screenshot")
+    d.screenshot("game2.jpg")
+    # 读取图像
+    image = cv2.imread('game2.jpg')
+    numbers = img2arr.img2arr(image)
     print(numbers)
-    click_indexs.append(click_index)
 
-for click_index in click_indexs:
-    ratio_x, ratio_y = get_point(click_index)
-    d.click(ratio_x,ratio_y)
+    sorted_numbers = sorted(numbers)
+    # 给定的数组
+    given_array = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
-# # 调用函数并打印结果示例
-# index = 1
-# ratio_x, ratio_y = get_point(index)
-# print(ratio_x, ratio_y)
+    # 检查排序后的数组是否等于给定数组
+    if sorted_numbers != given_array:
+        print("识别的图像不正确")
+        new_uuid = uuid.uuid4()
+        cv2.imwrite(f'./errgameimg/number_{new_uuid}.jpg', image)  # 保存图像
+        return
+
+    steps = klotski.get_path(numbers)
+    print(steps)
+
+    click_indexs = []
+    for step in steps:
+        index0 = step[0]
+        index1 = step[1]
+
+        a = numbers[index0]
+        b = numbers[index1]
+
+        click_index = index0
+        if a == 8:
+            click_index = index1
+
+        numbers[index0] = numbers[index1]
+        numbers[index1] = a
+
+        print(click_index)
+        print(numbers)
+        click_indexs.append(click_index)
+
+    for click_index in click_indexs:
+        ratio_x, ratio_y = get_point(click_index)
+        d.click(ratio_x, ratio_y)
+
+
+while True:
+    do_flow()
+    time.sleep(6)
+    # 点xia
+    d.click(0.296, 0.497)
+    # 暂停程序执行1秒
+    time.sleep(3)
+

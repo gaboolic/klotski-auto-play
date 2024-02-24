@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # 加载模型
-model = keras.models.load_model('lenet5.h5')
+model = keras.models.load_model('lenet5.keras')
 
 # 加载测试数据集
 (_, _), (test_images, test_labels) = keras.datasets.mnist.load_data()

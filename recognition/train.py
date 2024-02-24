@@ -47,4 +47,4 @@ model.compile(optimizer='adam',
 model.fit(train_images, train_labels, epochs=5)
 
 # 保存模型
-model.save('lenet5.h5')
+model.save('lenet5.keras')
