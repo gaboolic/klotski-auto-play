@@ -2,10 +2,6 @@ import math
 from queue import Queue
 
 # 定义初始状态和目标状态
-# start_state = [0, 1, 2, 4, 13, 5, 6, 7, 8, 18, 9, 11, 3, 22, 25, 33, 16, 17, 10, 20, 28, 12, 24, 14, 15, 35, 34, 39, 27, 21, 32, 30, 51, 23, 26, 43, 19, 29, 47, 46, 31, 41, 50, 59, 44, 36, 45, 37, 38, 68, 61, 42, 77, 53, 54, 55, 74, 56, 49, 40, 66, 58, 62, 63, 64, 75, 48, 67, 78, 57, 70, 79, 72, 73, 99, 65, 76, 69, 60, 52, 71]
-goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 99]
-
-
 def print_puzzle(state):
     total = len(state)
     length = int(math.sqrt(total))
@@ -49,6 +45,7 @@ def bfs(start_state, goal_state):
 
 def get_path(start_state):
     goal_state = sorted(start_state)
+    print(goal_state)
     path = bfs(start_state, goal_state)
 
     swaps = []
@@ -79,3 +76,8 @@ def show_path(start_state, goal_state):
 
     else:
         print("No solution found.")
+
+numbers = [12, 23, 10, 9, 4, 17, 21, 8, 5, 1, 22, 6, 0, 14, 11, 7, 15, 13, 3, 18, 2, 19, 99, 20, 16]
+goal_numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 99]
+steps = get_path(numbers)
+print(steps)

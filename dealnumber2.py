@@ -53,7 +53,7 @@ def do_flow():
     d.click(0.526, 0.28)
     d.click(0.526, 0.28)
     time.sleep(1)
-    split_count = 9
+    split_count = 5
     print("点拼图")
     # 点拼图
     # d.click(0.296, 0.497) # 拼图1
@@ -95,9 +95,9 @@ def do_flow():
         a = numbers[index0]
         b = numbers[index1]
 
-        click_index = index0
-        if a == 8:
-            click_index = index1
+        click_index = index1
+        # if a == 8:
+        #     click_index = index1
 
         numbers[index0] = numbers[index1]
         numbers[index1] = a
