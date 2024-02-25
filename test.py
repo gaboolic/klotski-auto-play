@@ -13,7 +13,7 @@ from recognition import img2arr
 # 读取图像
 # image = cv2.imread('errgameimg/game2.jpg')
 # image = cv2.imread('gameimg/55/55.jpg')
-image = cv2.imread('gameimg/99/99_wu_doren.jpg')
+image = cv2.imread('gameimg/99/99_xiandai_shengdan.jpg')
 numbers = img2arr.img2arr(image,9)
 print(numbers)
 
