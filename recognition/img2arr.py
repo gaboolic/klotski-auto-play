@@ -122,6 +122,7 @@ def img2arr(image,split_count):
             half_size = 28  # 因为我们想要20像素，所以取一半的大小
             # 提取中心数字图像
             number_image = image[center_y: center_y + half_size, center_x - 14: center_x + 28]
+            cv2.imwrite(f'temp/number__{i}_{j}.jpg', number_image)  # 保存图像
 
             # 存储提取的中心数字图像
             number_images.append(number_image)
