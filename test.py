@@ -13,12 +13,23 @@ from recognition import img2arr
 # 读取图像
 # image = cv2.imread('errgameimg/game2.jpg')
 # image = cv2.imread('gameimg/55/55.jpg')
-image = cv2.imread('gameimg/99/99.jpg')
+image = cv2.imread('gameimg/99/99_wu_doren.jpg')
 numbers = img2arr.img2arr(image,9)
 print(numbers)
 
 sorted_numbers = sorted(numbers)
 print(sorted_numbers)
+
+split_count = 9
+given_array = list(range(split_count * split_count - 1))
+given_array.append(99)
+
+# 检查排序后的数组是否等于给定数组
+if sorted_numbers != given_array:
+    print("识别的图像不正确")
+else:
+    print("识别的图像正确")
+
 
 # 将数组中所有元素加1
 numbers = [num + 1 for num in numbers]
