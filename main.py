@@ -40,8 +40,8 @@ def get_point(index, split_count):
     center_x = start_x + col * one_w + one_w // 2
     center_y = start_y + row * one_h + one_h // 2
 
-    ratio_x = (center_x - start_x) / (end_x - start_x)
-    ratio_y = (center_y - start_y) / (end_y - start_y)
+    ratio_x = (center_x - start_x) / width
+    ratio_y = (center_y - start_y) / height
 
     return ratio_x, ratio_y
 
@@ -113,8 +113,11 @@ def do_flow():
         print(click_index)
         click_indexs.append(click_index)
 
+    print(click_indexs)
     for click_index in click_indexs:
         ratio_x, ratio_y = get_point(click_index, split_count)
+        print(f"click_index:{click_index}")
+        print(ratio_x, ratio_y)
         d.click(ratio_x, ratio_y)
 
 
