@@ -33,6 +33,6 @@ dealnumber.py用来测试图片分割，test.py用来测试图片识别+华容�
 
 游戏截图：![demo1](gameimg/99/99.jpg)
 
-数字识别截图：![demo1](img_cnn.png)
+tensorflow LeNet-5 cnn数字识别截图：![demo1](img_cnn.png)
 
 9x9数字华容道运行效果（前几步）：![demo1](klotski_run.png)
