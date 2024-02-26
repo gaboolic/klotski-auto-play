@@ -4,7 +4,7 @@ import numpy as np
 # 读取图像
 # image = cv2.imread('errgameimg/game2.jpg')
 # image = cv2.imread('errgameimg/number_0e67ce2a-8154-4f7c-ab1e-8faa23900a8d.jpg')
-image = cv2.imread('gameimg/55/55.jpg')
+image = cv2.imread('game2.jpg')
 
 # 获取图像宽度和高度
 height, width, _ = image.shape
@@ -25,7 +25,8 @@ for x in range(width-1, width-150, -1):
         white_line_width_sum += 1
 
 print("白色竖线总宽度：", white_line_width_sum)
-
+if white_line_width_sum == 132:
+    white_line_width_sum -= 12
 width = 2400
 height = 1080
 
@@ -45,7 +46,7 @@ end_y = 21
 roi_width = width - start_x - end_x
 roi_height = height - start_y - end_y
 
-split_count = 5
+split_count = 9
 # one_w = 710
 # one_h = 344
 one_w = (roi_width) // split_count

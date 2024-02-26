@@ -14,7 +14,7 @@ from klotski import klotski99
 # 读取图像
 # image = cv2.imread('errgameimg/game2.jpg')
 # image = cv2.imread('gameimg/55/55.jpg')
-image = cv2.imread('gameimg/99/99.jpg')
+image = cv2.imread('game2.jpg')
 numbers = img2arr.img2arr(image,9)
 
 # numbers = [0, 1, 2, 4, 13, 5, 6, 7, 8, 18, 9, 11, 3, 22, 25, 33, 16, 17, 10, 20, 28, 12, 24, 14, 15, 35, 34, 39, 27, 21,

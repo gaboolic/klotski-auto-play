@@ -6,12 +6,14 @@ blank_num = 0
 
 
 # 计算曼哈顿距离
-def manhattan_distance(state, goal, target_count):
+def manhattan_distance(state, goal, current_row):
+    current_row = 0
     distance = 0
     for i in range(len(state)):
         for j in range(len(state[i])):
-            if state[i][j] != blank_num and state[i][j] < 64:
+            if state[i][j] != blank_num :
                 row, col = divmod(state[i][j] - 1, 9)
+                row -= current_row
                 distance += abs(i - row) + abs(j - col)
     return distance
 
@@ -55,7 +57,7 @@ def a_star_split(start, goal, target_count):
                     new_state[zero_row][zero_col]
 
                 if tuple(map(tuple, new_state)) not in visited:
-                    distance = manhattan_distance(new_state, goal, target_count)
+                    distance = manhattan_distance(new_state, goal, 0)
                     cost = len(path) + 1 + distance
                     frontier.put((cost, new_state, path + [(new_row, new_col)]))
 
@@ -63,7 +65,7 @@ def a_star_split(start, goal, target_count):
 
 
 # A*算法
-def a_star(start, goal, target_count):
+def a_star(start, goal, target_count, current_row):
     moves = [(0, -1), (0, 1), (-1, 0), (1, 0)]  # 左、右、上、下
     frontier = PriorityQueue()
     frontier.put((blank_num, start, []))
@@ -92,7 +94,7 @@ def a_star(start, goal, target_count):
                     new_state[zero_row][zero_col]
 
                 if tuple(map(tuple, new_state)) not in visited:
-                    distance = manhattan_distance(new_state, goal, target_count)
+                    distance = manhattan_distance(new_state, goal, current_row)
                     cost = len(path) + 1 + distance
                     frontier.put((cost, new_state, path + [(new_row, new_col)]))
 
@@ -158,10 +160,6 @@ def get_path(start, goal):
 
     start_time = time.time()
 
-    path, current_state = a_star(start, goal, 2)
-    print(path)
-    print(current_state)
-
     step_indexs = []
 
     print("二分")
@@ -184,7 +182,9 @@ def get_path(start, goal):
         print("start")
         print(i + 1)
         print(start)
-        path, current_state = a_star(start, goal, i + 1)
+        current_row = i // 9
+        # path, current_state = a_star(start[current_row:], goal[current_row:], i + 1, current_row)
+        path, current_state = a_star(start, goal, i + 1, current_row)
 
         if path:
             current_state = [row.copy() for row in start]  # 初始化当前状态为初始状态

@@ -68,7 +68,8 @@ def img2arr(image,split_count):
             white_line_width_sum += 1
 
     print("白色竖线总宽度：", white_line_width_sum)
-
+    if white_line_width_sum == 132:
+        white_line_width_sum -= 12
     width = 2400
     height = 1080
 
