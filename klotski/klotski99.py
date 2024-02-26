@@ -130,15 +130,9 @@ def get_path(start, goal):
             zero_row, zero_col = next(
                 (i, j) for i, row in enumerate(start) for j, val in enumerate(row) if val == blank_num)
 
-            print("初始状态：")
-            print_board(current_state)
-
-            print("移动步骤：")
             for step, (row, col) in enumerate(path):
                 current_state[row][col], current_state[zero_row][zero_col] = current_state[zero_row][zero_col], \
                     current_state[row][col]
-                print(f"Step {step + 1}: Move 0 to ({row}, {col})")
-                print(current_state)
                 zero_row, zero_col = row, col
                 step_indexs.append((row, col))
         start = current_state
@@ -160,31 +154,45 @@ def get_path(start, goal):
             zero_row, zero_col = next(
                 (i, j) for i, row in enumerate(start) for j, val in enumerate(row) if val == blank_num)
 
-            print("初始状态：")
-            print_board(current_state)
-
-            print("移动步骤：")
             for step, (row, col) in enumerate(path):
                 current_state[row][col], current_state[zero_row][zero_col] = current_state[zero_row][zero_col], \
                     current_state[row][col]
-                print(f"Step {step + 1}: Move 0 to ({row}, {col})")
-                print(current_state)
                 zero_row, zero_col = row, col
-                step_indexs.append((row, col))
+                step_indexs.append((row+7, col))
 
         start = current_state
     end_time = time.time()
     print(f"{end_time - start_time}秒")
     return step_indexs
 
+def get_path_warp(start):
+    numbers = [-1 if num == 99 else num for num in start]
+    # 将数组中所有元素加1
+    numbers = [num + 1 for num in numbers]
+    # 将一维数组转换为二维数组
+    numbers_2d = [numbers[i:i + 9] for i in range(0, len(numbers), 9)]
 
-# start = [[1, 2, 3, 5, 14, 6, 7, 8, 9], [19, 10, 12, 4, 23, 26, 34, 17, 18], [11, 21, 29, 13, 25, 15, 16, 36, 35],
-#          [40, 28, 22, 33, 31, 52, 24, 27, 44], [20, 30, 48, 47, 32, 42, 51, 60, 45],
-#          [37, 46, 38, 39, 69, 62, 43, 78, 54], [55, 56, 75, 57, 50, 41, 67, 59, 63],
-#          [64, 65, 76, 49, 68, 79, 58, 71, 80], [73, 74, 0, 66, 77, 70, 61, 53, 72]]
-#
-#
-#
+    split_count = 9
+    given_array = list(range(1, split_count * split_count))
+    given_array.append(0)
+    # 将一维数组转换为二维数组
+    given_array = [given_array[i:i + 9] for i in range(0, len(given_array), 9)]
+    print(given_array)
+
+    paths = get_path(numbers_2d, given_array)
+    indexs = []
+    for path in paths:
+        index = path[0] * 9 + path[1]
+        indexs.append(index)
+    return indexs
+
+start = [[1, 2, 3, 5, 14, 6, 7, 8, 9], [19, 10, 12, 4, 23, 26, 34, 17, 18], [11, 21, 29, 13, 25, 15, 16, 36, 35],
+         [40, 28, 22, 33, 31, 52, 24, 27, 44], [20, 30, 48, 47, 32, 42, 51, 60, 45],
+         [37, 46, 38, 39, 69, 62, 43, 78, 54], [55, 56, 75, 57, 50, 41, 67, 59, 63],
+         [64, 65, 76, 49, 68, 79, 58, 71, 80], [73, 74, 0, 66, 77, 70, 61, 53, 72]]
+
+
+
 # # 目标状态
 goal = [[1, 2, 3, 4, 5, 6, 7, 8, 9], [10, 11, 12, 13, 14, 15, 16, 17, 18], [19, 20, 21, 22, 23, 24, 25, 26, 27],
         [28, 29, 30, 31, 32, 33, 34, 35, 36], [37, 38, 39, 40, 41, 42, 43, 44, 45],
