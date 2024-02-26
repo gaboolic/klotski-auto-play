@@ -38,7 +38,7 @@ def a_star_split(start, goal, target_count):
 
         flattened_current_state = [val for row in current_state for val in row]
 
-        if sorted(flattened_current_state[:27]) == list(range(1, 28)):
+        if sorted(flattened_current_state[:54])[:26] == list(range(1, 27)):
             return path, current_state
 
         visited.add(tuple(map(tuple, current_state)))
@@ -108,8 +108,11 @@ def a_star_bottom(start, goal, target_count):
     while not frontier.empty():
         _, current_state, path = frontier.get()
 
-        flattened_current_state = [val for row in current_state for val in row]
-        flattened_goal = [val for row in goal for val in row]
+        # flattened_current_state = [val for row in current_state for val in row]
+        # flattened_goal = [val for row in goal for val in row]
+
+        flattened_current_state = [val for col in zip(*current_state) for val in col]
+        flattened_goal = [val for col in zip(*goal) for val in col]
 
         if flattened_current_state[:target_count] == flattened_goal[:target_count]:
             return path, current_state
