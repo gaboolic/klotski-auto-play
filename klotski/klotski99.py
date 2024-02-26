@@ -10,7 +10,7 @@ def manhattan_distance(state, goal, target_count):
     distance = 0
     for i in range(len(state)):
         for j in range(len(state[i])):
-            if state[i][j] != blank_num:
+            if state[i][j] != blank_num and state[i][j] < 64:
                 row, col = divmod(state[i][j] - 1, 9)
                 distance += abs(i - row) + abs(j - col)
     return distance

@@ -40,8 +40,8 @@ def get_point(index, split_count):
     center_x = start_x + col * one_w + one_w // 2
     center_y = start_y + row * one_h + one_h // 2
 
-    ratio_x = (center_x ) / width
-    ratio_y = (center_y ) / height
+    ratio_x = (center_x) / width
+    ratio_y = (center_y) / height
 
     return ratio_x, ratio_y
 
@@ -51,6 +51,10 @@ d = u2.connect()  # connect to device
 print("end connect")
 print(d.info)
 print(d.serial)  # BEWOOZNBYLFYQWHA
+
+print(d.settings)
+# 配置点击前延时
+d.settings['operation_delay'] = (0.01, 0.01)
 
 
 def do_flow():
