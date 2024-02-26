@@ -30,3 +30,9 @@ python版本3.10，tensorflow==2.15.0
 main.py为主文件
 
 dealnumber.py用来测试图片分割，test.py用来测试图片识别+华容道解法
+
+游戏截图：![demo1](gameimg/99/99.jpg)
+
+数字识别截图：![demo1](img_cnn.png)
+
+9x9数字华容道运行效果（前几步）：![demo1](klotski_run.png)
