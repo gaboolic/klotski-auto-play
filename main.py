@@ -113,7 +113,7 @@ def do_flow():
         print(click_index)
         click_indexs.append(click_index)
 
-    print(click_indexs)
+    print(f"点击次数:{len(click_indexs)},click_indexs:{click_indexs}")
     for click_index in click_indexs:
         ratio_x, ratio_y = get_point(click_index, split_count)
         print(f"click_index:{click_index}")
