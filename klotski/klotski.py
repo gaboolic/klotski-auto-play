@@ -77,7 +77,3 @@ def show_path(start_state, goal_state):
     else:
         print("No solution found.")
 
-numbers = [12, 23, 10, 9, 4, 17, 21, 8, 5, 1, 22, 6, 0, 14, 11, 7, 15, 13, 3, 18, 2, 19, 99, 20, 16]
-goal_numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 99]
-steps = get_path(numbers)
-print(steps)

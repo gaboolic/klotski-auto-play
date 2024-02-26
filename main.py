@@ -45,9 +45,13 @@ def get_point(index, split_count):
 
     return ratio_x, ratio_y
 
+
+print("start connect")
 d = u2.connect()  # connect to device
+print("end connect")
 print(d.info)
 print(d.serial)  # BEWOOZNBYLFYQWHA
+
 
 def do_flow():
     # 点npc
