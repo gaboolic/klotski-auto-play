@@ -1,4 +1,6 @@
-本项目可以用来识别屏幕图片，自动完成拼图(数字华容道)
+本项目可以用来识别屏幕图片，自动完成新仙剑奇侠传二里的拼图(数字华容道)小游戏
+
+klotski/klotski99可用来对9x9大小的数字华容道求解，可能是全网唯一一份9x9大小的数字华容道求解python代码
 
 python版本3.10，tensorflow==2.15.0
 
@@ -25,4 +27,6 @@ python版本3.10，tensorflow==2.15.0
 - recognition 使用tensorflow训练、识别数字，有2个模型，一个用来判断是否数字，一个用来识别数字，后来想了想其实用一个网络就行，把num_classes从10改成11就行
 - template 存储分割后的数字模板用于训练
 
-main.py为主文件，dealnumber.py用来测试图片分割，test.py用来测试图片识别+华容道解法
+main.py为主文件
+
+dealnumber.py用来测试图片分割，test.py用来测试图片识别+华容道解法
