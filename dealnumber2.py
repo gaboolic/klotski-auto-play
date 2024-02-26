@@ -4,24 +4,38 @@ import cv2
 import numpy as np
 from recognition import img2arr
 from klotski import klotski
+from klotski import klotski99
 # from tensorflow import keras
 import tensorflow.python.keras as keras
 
 import uiautomator2 as u2
 
 
-def get_point(index):
+def get_point(index, split_count):
+    width = 2400
+    height = 1080
+
+    # 107 21
+    # 13 2
+    # 15 2
+    # 132 21
+    # 左边120 右边147 下面黑条21
+    # 小图236 113
+    # 小图236 114
     start_x = 120
     start_y = 23
-    end_x = 2400
-    end_y = 1080
+    end_x = 132
+    end_y = 21
 
-    one_w = 710
-    one_h = 344
+    roi_width = width - start_x - end_x
+    roi_height = height - start_y - end_y
+
+    one_w = (roi_width) // split_count
+    one_h = (roi_height) // split_count
 
     # 计算中心点的比例
-    row = index // 3  # 行数
-    col = index % 3  # 列数
+    row = index // split_count  # 行数
+    col = index % split_count  # 列数
 
     center_x = start_x + col * one_w + one_w // 2
     center_y = start_y + row * one_h + one_h // 2
@@ -31,11 +45,9 @@ def get_point(index):
 
     return ratio_x, ratio_y
 
-
 d = u2.connect()  # connect to device
 print(d.info)
 print(d.serial)  # BEWOOZNBYLFYQWHA
-
 
 def do_flow():
     # 点npc
@@ -53,7 +65,7 @@ def do_flow():
     d.click(0.526, 0.28)
     d.click(0.526, 0.28)
     time.sleep(1)
-    split_count = 5
+    split_count = 9
     print("点拼图")
     # 点拼图
     # d.click(0.296, 0.497) # 拼图1
@@ -81,7 +93,10 @@ def do_flow():
         cv2.imwrite(f'./errgameimg/number_{new_uuid}.jpg', image)  # 保存图像
         return
 
-    steps = klotski.get_path(numbers)
+    if split_count == 9:
+        steps = klotski99.get_path_warp(numbers)
+    else:
+        steps = klotski.get_path(numbers)
     print(steps)
     if not steps:
         print("klotski steps为空")
@@ -89,16 +104,13 @@ def do_flow():
 
     click_indexs = []
     for step in steps:
-        index0 = step[0]
-        index1 = step[1]
-
-        click_index = index1
+        click_index = step
 
         print(click_index)
         click_indexs.append(click_index)
 
     for click_index in click_indexs:
-        ratio_x, ratio_y = get_point(click_index)
+        ratio_x, ratio_y = get_point(click_index, split_count)
         d.click(ratio_x, ratio_y)
 
 
