@@ -182,21 +182,6 @@ def get_path(start, goal):
 
     step_indexs = []
 
-    print("二分")
-    # path, current_state = a_star_split(start, goal,0, 54, 27, 36)
-    path, current_state = a_star_split(start, goal, 0, 80, 40, 40)
-    print("二分结束")
-    if path:
-        current_state = [row.copy() for row in start]  # 初始化当前状态为初始状态
-        zero_row, zero_col = next(
-            (i, j) for i, row in enumerate(start) for j, val in enumerate(row) if val == blank_num)
-
-        for step, (row, col) in enumerate(path):
-            current_state[row][col], current_state[zero_row][zero_col] = current_state[zero_row][zero_col], \
-                current_state[row][col]
-            zero_row, zero_col = row, col
-            step_indexs.append((row, col))
-    start = current_state
 
     print("二分")
     # path, current_state = a_star_split(start, goal,0, 54, 27, 36)
