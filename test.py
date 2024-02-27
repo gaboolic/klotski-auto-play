@@ -17,7 +17,9 @@ from klotski import klotski99
 # image = cv2.imread('errgameimg/game2.jpg')
 # image = cv2.imread('gameimg/55/55.jpg')
 # image = cv2.imread('game2.jpg')
-image = cv2.imread('gameimg/99/99_wu.jpg')
+# image = cv2.imread('gameimg/99/99_wu_doren.jpg') # 识别错误
+# image = cv2.imread('gameimg/99/99_xiandai_shengdan.jpg') # 卡在二分
+image = cv2.imread('gameimg/99/99lan.jpg') # 卡50
 
 recognition_start_time = time.time()
 numbers = img2arr.img2arr(image, 9)
@@ -39,6 +41,7 @@ given_array.append(99)
 # 检查排序后的数组是否等于给定数组
 if sorted_numbers != given_array:
     print("识别的图像不正确")
+    exit()
 else:
     print("识别的图像正确")
 
