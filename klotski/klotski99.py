@@ -21,7 +21,7 @@ def manhattan_distance_split(state, goal, remove_row_count, total_count, pre_cou
 
 # 计算曼哈顿距离
 def manhattan_distance(state, goal, target_count, current_row):
-    current_row = 0
+    #current_row = 0
     distance = 0
     for i in range(len(state)):
         for j in range(len(state[i])):
