@@ -17,7 +17,7 @@ from klotski import klotski99
 # image = cv2.imread('errgameimg/game2.jpg')
 # image = cv2.imread('gameimg/55/55.jpg')
 # image = cv2.imread('game2.jpg')
-image = cv2.imread('gameimg/99/99_qi.jpg')
+image = cv2.imread('gameimg/99/99_wu.jpg')
 
 recognition_start_time = time.time()
 numbers = img2arr.img2arr(image, 9)
@@ -43,7 +43,7 @@ else:
     print("识别的图像正确")
 
 paths = klotski99.get_path_warp(numbers)
-print(len(paths))
+print(f"移动步数:{len(paths)}")
 print(paths)
 
 print("打印移动")
