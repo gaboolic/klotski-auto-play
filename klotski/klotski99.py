@@ -14,7 +14,7 @@ def manhattan_distance_split(state, goal, remove_row_count, total_count, pre_cou
                 row -= remove_row_count
                 distance += abs(i - row) + abs(j - col)
             elif state[i][j] == blank_num:
-                row, col = 1, 8
+                row, col = remove_row_count, 8
                 distance += abs(i - row) + abs(j - col)
     return distance
 
@@ -195,10 +195,12 @@ def get_path(start, goal):
                 (i, j) for i, row in enumerate(start) for j, val in enumerate(row) if val == blank_num)
 
             for step, (row, col) in enumerate(path):
+                row += deal_count * 2
                 start[row][col], start[zero_row][zero_col] = start[zero_row][zero_col], \
                     start[row][col]
                 zero_row, zero_col = row, col
                 step_indexs.append((row, col))
+        print(start)
 
         start_count = deal_count * 18
         # 执行A*算法
