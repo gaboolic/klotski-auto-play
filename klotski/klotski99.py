@@ -14,7 +14,7 @@ def manhattan_distance_split(state, goal,remove_row_count, total_count, pre_coun
                 row -= remove_row_count
                 distance += abs(i - row) + abs(j - col)
             elif state[i][j] == blank_num:
-                row, col = 2, 8
+                row, col = 1, 8
                 distance += abs(i - row) + abs(j - col)
     return distance
 
@@ -25,6 +25,7 @@ def manhattan_distance(state, goal, target_count, current_row):
     distance = 0
     for i in range(len(state)):
         for j in range(len(state[i])):
+            # if state[i][j] != blank_num and state[i][j] <= target_count:
             if state[i][j] != blank_num:
                 row, col = divmod(state[i][j] - 1, 9)
                 row -= current_row
@@ -35,18 +36,6 @@ def manhattan_distance(state, goal, target_count, current_row):
     return distance
 
 
-def manhattan_distance_3_7(state, goal, target_count, current_row):
-    distance = 0
-    for i in range(len(state)):
-        for j in range(len(state[i])):
-            if state[i][j] != blank_num:
-                row, col = divmod(state[i][j] - 1, 9)
-                row -= current_row
-                distance += abs(i - row) + abs(j - col)
-            # elif state[i][j] == blank_num:
-            #     row, col = current_row, 8
-            #     distance += abs(i - row) + abs(j - col)
-    return distance
 
 
 def manhattan_distance_bottom(state, goal):
@@ -135,41 +124,6 @@ def a_star(start, goal, target_count, current_row):
     return None
 
 
-def a_star_3_7(start, goal, target_count, current_row):
-    moves = [(0, -1), (0, 1), (-1, 0), (1, 0)]  # 左、右、上、下
-    frontier = PriorityQueue()
-    frontier.put((blank_num, start, []))
-    visited = set()
-
-    while not frontier.empty():
-        _, current_state, path = frontier.get()
-
-        flattened_current_state = [val for row in current_state for val in row]
-        flattened_goal = [val for row in goal for val in row]
-
-        if flattened_current_state[:target_count] == flattened_goal[:target_count]:
-            return path, current_state
-
-        visited.add(tuple(map(tuple, current_state)))
-
-        zero_row, zero_col = next(
-            (i, j) for i, row in enumerate(current_state) for j, val in enumerate(row) if val == blank_num)
-
-        for move in moves:
-            new_row, new_col = zero_row + move[0], zero_col + move[1]
-            target_num = current_state[new_row][new_col]
-            last_row_num = current_row * 9
-            if target_num > last_row_num and 0 <= new_row < len(start) and 0 <= new_col < 9:
-                new_state = [row.copy() for row in current_state]
-                new_state[zero_row][zero_col], new_state[new_row][new_col] = new_state[new_row][new_col], \
-                    new_state[zero_row][zero_col]
-
-                if tuple(map(tuple, new_state)) not in visited:
-                    distance = manhattan_distance_3_7(new_state, goal, target_count, current_row)
-                    cost = len(path) + 1 + distance
-                    frontier.put((cost, new_state, path + [(new_row, new_col)]))
-
-    return None
 
 
 def a_star_bottom(start, goal, target_count):
@@ -234,7 +188,8 @@ def get_path(start, goal):
     step_indexs = []
 
     print("二分")
-    path, current_state = a_star_split(start, goal,0, 54, 27, 36)
+    # path, current_state = a_star_split(start, goal,0, 54, 27, 36)
+    path, current_state = a_star_split(start, goal,0, 36, 28, 27)
     print("二分结束")
     if path:
         current_state = [row.copy() for row in start]  # 初始化当前状态为初始状态
@@ -249,13 +204,14 @@ def get_path(start, goal):
     start = current_state
 
     # 执行A*算法
-    for i in range(0, 27):
+    for i in range(0, 18):
         print("start")
         print(i + 1)
         print(start)
+        print(start[:4])
         current_row = i // 9
         # path, current_state = a_star(start[current_row:], goal[current_row:], i + 1, current_row)
-        path, current_state = a_star(start[:6], goal[:], i + 1, current_row)
+        path, current_state = a_star(start[:4], goal[:4], i + 1, current_row)
         # path, current_state = a_star(start, goal, i + 1, current_row)
 
         if path:
@@ -269,7 +225,7 @@ def get_path(start, goal):
                 step_indexs.append((row, col))
 
     print("2次二分")
-    path, current_state = a_star_split(start, goal, 3,36, 18, 27)
+    path, current_state = a_star_split(start, goal, 2,36, 18, 27)
     print("2次二分结束")
     if path:
         current_state = [row.copy() for row in start]  # 初始化当前状态为初始状态
@@ -283,12 +239,12 @@ def get_path(start, goal):
             step_indexs.append((row, col))
 
     # 执行A*算法
-    for i in range(27, 63):
+    for i in range(18, 63):
         print("start")
         print(i + 1)
         print(start)
         current_row = i // 9
-        print("27, 63 start and goal:")
+        print("18, 63 start and goal:")
         print(start[current_row:7])
         print(goal[current_row:7])
         path, current_state = a_star(start, goal, i + 1, current_row)
