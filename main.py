@@ -1,3 +1,5 @@
+import concurrent
+import threading
 import time
 import uuid
 import cv2
@@ -53,18 +55,34 @@ print(d.info)
 print(d.serial)  # BEWOOZNBYLFYQWHA
 
 print(d.settings)
+
+
 # 配置点击前延时
-d.settings['operation_delay'] = (0.01, 0.01)
+# d.settings['operation_delay'] = (0.01, 0.01)
 
 
-def do_flow():
+def async_click(executor, d, x, y):
+    thread_start_time = time.perf_counter()
+    executor.submit(d.click, x, y)
+    thread_end_time = time.perf_counter()
+    print(f"线程执行时间{thread_end_time-thread_start_time}秒")
+    sleep_time = 0.05
+    time.sleep(sleep_time)
+    print(f"点击sleep时间{sleep_time}秒")
+
+
+def do_flow(executor):
+
     # 点npc
+    npc_start_time = time.time()
     print("点npc")
-    d.click(0.526, 0.28)
+    # d.click(0.526, 0.28)
+    async_click(executor,d,0.526, 0.28)
     time.sleep(0.5)
 
     # d1
-    d.click(0.526, 0.28)
+    # d.click(0.526, 0.28)
+    async_click(executor,d, 0.526, 0.28)
     time.sleep(0.5)
 
     d.click(0.526, 0.28)
@@ -82,9 +100,15 @@ def do_flow():
     time.sleep(6)
     print("screenshot")
     d.screenshot("game2.jpg")
+    npc_end_time = time.time()
+    print(f"npc交互耗时:{npc_end_time - npc_start_time}秒")
+
+    recognition_start_time = time.time()
     # 读取图像
     image = cv2.imread('game2.jpg')
     numbers = img2arr.img2arr(image, split_count)
+    recognition_end_time = time.time()
+    print(f"图片读取识别耗时:{recognition_end_time - recognition_start_time}秒")
     print(numbers)
 
     sorted_numbers = sorted(numbers)
@@ -101,10 +125,14 @@ def do_flow():
         cv2.imwrite(f'./errgameimg/number_{new_uuid}.jpg', image)  # 保存图像
         return
 
+    klotski_start_time = time.time()
     if split_count == 9:
         steps = klotski99.get_path_warp(numbers)
     else:
         steps = klotski.get_path(numbers)
+    klotski_end_time = time.time()
+    print(f"数字华容道求解耗时:{klotski_end_time - klotski_start_time}秒")
+    print(f"移动次数:len(steps)")
     print(steps)
     if not steps:
         print("klotski steps为空")
@@ -118,17 +146,27 @@ def do_flow():
         click_indexs.append(click_index)
 
     print(f"点击次数:{len(click_indexs)},click_indexs:{click_indexs}")
+
+    click_start_time = time.time()
     for click_index in click_indexs:
         ratio_x, ratio_y = get_point(click_index, split_count)
         print(f"click_index:{click_index}")
         print(ratio_x, ratio_y)
         d.click(ratio_x, ratio_y)
+        async_click(executor,d, ratio_x, ratio_y)
+    click_end_time = time.time()
+    print(f"点击耗时:{click_end_time - click_start_time}秒")
+    print(f"点击次数:{len(click_indexs)}")
 
 
 while True:
-    do_flow()
+    one_flow_start_time = time.time()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        do_flow(executor)
     time.sleep(6)
     # 点xia
     d.click(0.296, 0.497)
     # 暂停程序执行1秒
     time.sleep(3)
+    one_flow_end_time = time.time()
+    print(f"完成一次流程总时间:{one_flow_end_time - one_flow_start_time}秒")

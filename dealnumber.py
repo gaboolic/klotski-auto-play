@@ -3,8 +3,8 @@ import numpy as np
 
 # 读取图像
 # image = cv2.imread('errgameimg/game2.jpg')
-# image = cv2.imread('errgameimg/number_0e67ce2a-8154-4f7c-ab1e-8faa23900a8d.jpg')
-image = cv2.imread('game2.jpg')
+# image = cv2.imread('game2.jpg')
+image = cv2.imread('gameimg/99/99_huang_jianke.jpg')
 
 # 获取图像宽度和高度
 height, width, _ = image.shape
@@ -19,7 +19,7 @@ white_line_width_sum = 0
 for x in range(width-1, width-150, -1):
     white_pixel_count = 0
     for y in range(height):
-        if (image[y, x] == 255).all():
+        if (image[y, x] > 250).all():
             white_pixel_count += 1
     if white_pixel_count >= white_threshold:
         white_line_width_sum += 1

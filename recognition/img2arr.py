@@ -45,7 +45,7 @@ def one_img(image):
     predictions = model.predict(image)
     # 打印预测结果
     predicted_label = np.argmax(predictions[0])
-    # cv2.imwrite(f'temp/predict_{predicted_label}_{time.time()}.jpg', resize_img)  # 保存图像
+    cv2.imwrite(f'temp/predict_{predicted_label}_{time.time()}.jpg', resize_img)  # 保存图像
     return predicted_label
 
 
@@ -63,7 +63,7 @@ def img2arr(image,split_count):
     for x in range(width - 1, width - 150, -1):
         white_pixel_count = 0
         for y in range(height):
-            if (image[y, x] == 255).all():
+            if (image[y, x] > 250).all():
                 white_pixel_count += 1
         if white_pixel_count >= white_threshold:
             white_line_width_sum += 1
@@ -124,7 +124,7 @@ def img2arr(image,split_count):
             half_size = 28  # 因为我们想要20像素，所以取一半的大小
             # 提取中心数字图像
             number_image = image[center_y: center_y + half_size, center_x - 14: center_x + 28]
-            # cv2.imwrite(f'temp/number__{i}_{j}.jpg', number_image)  # 保存图像
+            cv2.imwrite(f'temp/number__{i}_{j}.jpg', number_image)  # 保存图像
 
             # 存储提取的中心数字图像
             number_images.append(number_image)

@@ -17,9 +17,10 @@ from klotski import klotski99
 # image = cv2.imread('errgameimg/game2.jpg')
 # image = cv2.imread('gameimg/55/55.jpg')
 # image = cv2.imread('game2.jpg')
-# image = cv2.imread('gameimg/99/99_wu_doren.jpg') # 识别错误
+image = cv2.imread('gameimg/99/99_wu_doren.jpg')
 # image = cv2.imread('gameimg/99/99_xiandai_shengdan.jpg') # 卡在二分
-image = cv2.imread('gameimg/99/99lan.jpg') # 卡50
+# image = cv2.imread('gameimg/99/99lan.jpg') # 卡50
+# image = cv2.imread('gameimg/99/99_huang_jianke.jpg')
 
 recognition_start_time = time.time()
 numbers = img2arr.img2arr(image, 9)
