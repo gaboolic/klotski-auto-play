@@ -99,7 +99,14 @@ def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, cu
     frontier.put((blank_num, start, []))
     visited = set()
 
+    iterations = 0
+
     while not frontier.empty():
+        iterations += 1
+        if iterations > 100000:
+            print("Exceeded maximum iterations. No solution found.")
+            return None
+
         _, current_state, path = frontier.get()
 
         flattened_current_state = [val for row in current_state for val in row]
@@ -119,7 +126,8 @@ def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, cu
 
             if 0 <= new_row < len(start) and 0 <= new_col < 9 and current_state[new_row][new_col] > last_row_num:
                 target_num = current_state[new_row][new_col]
-                if target_num >= target_count or new_col in [6, 7, 8]:
+                # if target_num >= target_count or new_col in [6, 7, 8]:
+                if True:
                     new_state = [row.copy() for row in current_state]
                     new_state[zero_row][zero_col], new_state[new_row][new_col] = new_state[new_row][new_col], \
                         new_state[zero_row][zero_col]
