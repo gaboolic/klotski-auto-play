@@ -14,14 +14,15 @@ from klotski import klotski99
 # 读取图像
 # image = cv2.imread('errgameimg/game2.jpg')
 # image = cv2.imread('gameimg/55/55.jpg')
-image = cv2.imread('game2.jpg')
+# image = cv2.imread('game2.jpg')
+image = cv2.imread('gameimg/99/99_lyr.jpg')
 numbers = img2arr.img2arr(image,9)
 
 # numbers = [0, 1, 2, 4, 13, 5, 6, 7, 8, 18, 9, 11, 3, 22, 25, 33, 16, 17, 10, 20, 28, 12, 24, 14, 15, 35, 34, 39, 27, 21,
 #            32, 30, 51, 23, 26, 43, 19, 29, 47, 46, 31, 41, 50, 59, 44, 36, 45, 37, 38, 68, 61, 42, 77, 53, 54, 55, 74,
 #            56, 49, 40, 66, 58, 62, 63, 64, 75, 48, 67, 78, 57, 70, 79, 72, 73, 99, 65, 76, 69, 60, 52, 71]
 
-
+print(numbers)
 sorted_numbers = sorted(numbers)
 print(sorted_numbers)
 

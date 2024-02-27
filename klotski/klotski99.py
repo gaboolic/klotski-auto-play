@@ -44,7 +44,7 @@ def manhattan_distance_bottom(state, goal):
         for j in range(len(state[i])):
             if state[i][j] != blank_num:
                 row, col = divmod(state[i][j] - 1, 9)
-                row -= 7
+                row -= 6
                 distance += abs(i - row) + abs(j - col)
     return distance
 
@@ -158,11 +158,7 @@ def a_star_bottom(start, goal, target_count):
                     new_state[zero_row][zero_col]
 
                 if tuple(map(tuple, new_state)) not in visited:
-                    distance = 0
-                    if len(start) == 9:
-                        distance = manhattan_distance(new_state, goal, target_count)
-                    else:
-                        distance = manhattan_distance_bottom(new_state, goal)
+                    distance = manhattan_distance_bottom(new_state, goal)
                     cost = len(path) + 1 + distance
                     frontier.put((cost, new_state, path + [(new_row, new_col)]))
 
@@ -189,7 +185,23 @@ def get_path(start, goal):
 
     print("二分")
     # path, current_state = a_star_split(start, goal,0, 54, 27, 36)
-    path, current_state = a_star_split(start, goal,0, 36, 28, 27)
+    path, current_state = a_star_split(start, goal,0, 80, 40, 40)
+    print("二分结束")
+    if path:
+        current_state = [row.copy() for row in start]  # 初始化当前状态为初始状态
+        zero_row, zero_col = next(
+            (i, j) for i, row in enumerate(start) for j, val in enumerate(row) if val == blank_num)
+
+        for step, (row, col) in enumerate(path):
+            current_state[row][col], current_state[zero_row][zero_col] = current_state[zero_row][zero_col], \
+                current_state[row][col]
+            zero_row, zero_col = row, col
+            step_indexs.append((row, col))
+    start = current_state
+
+    print("二分")
+    # path, current_state = a_star_split(start, goal,0, 54, 27, 36)
+    path, current_state = a_star_split(start, goal, 0, 36, 28, 27)
     print("二分结束")
     if path:
         current_state = [row.copy() for row in start]  # 初始化当前状态为初始状态
@@ -225,7 +237,7 @@ def get_path(start, goal):
                 step_indexs.append((row, col))
 
     print("2次二分")
-    path, current_state = a_star_split(start, goal, 2,36, 18, 27)
+    path, current_state = a_star_split(start, goal, 2,36, 28, 27)
     print("2次二分结束")
     if path:
         current_state = [row.copy() for row in start]  # 初始化当前状态为初始状态
@@ -239,7 +251,7 @@ def get_path(start, goal):
             step_indexs.append((row, col))
 
     # 执行A*算法
-    for i in range(18, 63):
+    for i in range(18, 54):
         print("start")
         print(i + 1)
         print(start)
@@ -264,15 +276,15 @@ def get_path(start, goal):
 
     print("已经拼好前n-2层")
 
-    start = start[-2:]
+    start = start[-3:]
     print("start")
     print(start)
 
-    for i in range(18):
+    for i in range(27):
         print("start")
         print(i + 1)
         print(start)
-        path, current_state = a_star_bottom(start[-2:], goal[-2:], i + 1)
+        path, current_state = a_star_bottom(start[-3:], goal[-3:], i + 1)
 
         if path:
             current_state = [row.copy() for row in start]  # 初始化当前状态为初始状态
