@@ -121,7 +121,8 @@ def a_star(start, goal, target_count, current_row):
 
         for move in moves:
             new_row, new_col = zero_row + move[0], zero_col + move[1]
-            if 0 <= new_row < len(start) and 0 <= new_col < 9:
+            last_row_num = current_row * 9
+            if 0 <= new_row < len(start) and 0 <= new_col < 9 and current_state[new_row][new_col] > last_row_num:
                 new_state = [row.copy() for row in current_state]
                 new_state[zero_row][zero_col], new_state[new_row][new_col] = new_state[new_row][new_col], \
                     new_state[zero_row][zero_col]
@@ -157,7 +158,8 @@ def a_star_3_7(start, goal, target_count, current_row):
         for move in moves:
             new_row, new_col = zero_row + move[0], zero_col + move[1]
             target_num = current_state[new_row][new_col]
-            if 0 <= new_row < len(start) and 0 <= new_col < 9:
+            last_row_num = current_row * 9
+            if target_num > last_row_num and 0 <= new_row < len(start) and 0 <= new_col < 9:
                 new_state = [row.copy() for row in current_state]
                 new_state[zero_row][zero_col], new_state[new_row][new_col] = new_state[new_row][new_col], \
                     new_state[zero_row][zero_col]
