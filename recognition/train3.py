@@ -47,7 +47,7 @@ train_labels = np.array(train_labels)
 model = keras.models.load_model('lenet5.keras')
 
 # 训练模型
-model.fit(train_images, train_labels, epochs=20)
+model.fit(train_images, train_labels, epochs=40)
 
 # 保存模型
 model.save('lenet5.keras')

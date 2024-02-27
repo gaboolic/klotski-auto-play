@@ -145,5 +145,5 @@ def img2arr(image,split_count):
             num2 = one_img(part2)
             number = number * 10 + num2
         numbers.append(number)
-        # cv2.imwrite(f'temp/number_{number}.jpg', num_img)  # 保存图像
+        cv2.imwrite(f'temp/number_{number}.jpg', num_img)  # 保存图像
     return numbers
