@@ -116,15 +116,18 @@ def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, cu
         for move in moves:
             new_row, new_col = zero_row + move[0], zero_col + move[1]
             last_row_num = current_row * 9
-            if 0 <= new_row < len(start) and 0 <= new_col < 9 and current_state[new_row][new_col] > last_row_num:
-                new_state = [row.copy() for row in current_state]
-                new_state[zero_row][zero_col], new_state[new_row][new_col] = new_state[new_row][new_col], \
-                    new_state[zero_row][zero_col]
 
-                if tuple(map(tuple, new_state)) not in visited:
-                    distance = manhattan_distance(new_state, goal, target_count, current_row)
-                    cost = len(path) + 1 + distance
-                    frontier.put((cost, new_state, path + [(new_row, new_col)]))
+            if 0 <= new_row < len(start) and 0 <= new_col < 9 and current_state[new_row][new_col] > last_row_num:
+                target_num = current_state[new_row][new_col]
+                if target_num >= target_count or new_col in [6, 7, 8]:
+                    new_state = [row.copy() for row in current_state]
+                    new_state[zero_row][zero_col], new_state[new_row][new_col] = new_state[new_row][new_col], \
+                        new_state[zero_row][zero_col]
+
+                    if tuple(map(tuple, new_state)) not in visited:
+                        distance = manhattan_distance(new_state, goal, target_count, current_row)
+                        cost = len(path) + 1 + distance
+                        frontier.put((cost, new_state, path + [(new_row, new_col)]))
 
     return None
 
