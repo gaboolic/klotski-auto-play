@@ -22,7 +22,7 @@ def manhattan_distance_split(state, goal, remove_row_count, total_count, pre_cou
 
 # 计算曼哈顿距离
 def manhattan_distance(state, goal, target_count, current_row):
-    #current_row = 0
+    # current_row = 0
     distance = 0
     for i in range(len(state)):
         for j in range(len(state[i])):
@@ -206,7 +206,7 @@ def get_path(start, goal):
     for deal_count in range(3):
         print("二分")
         # path, current_state = a_star_split(start, goal,0, 54, 27, 36)
-        path, current_state = a_star_split(start, goal, deal_count*2, 36, 18, 36)
+        path, current_state = a_star_split(start, goal, deal_count * 2, 9 * 4, 9 * 2, 9 * 4)
         print("二分结束")
         if path:
             zero_row, zero_col = next(
@@ -220,14 +220,15 @@ def get_path(start, goal):
                 step_indexs.append((row, col))
         print(start)
 
-        start_count = deal_count * 18
+        start_count = deal_count * 9 * 2
         # 执行A*算法
-        for i in range(start_count, start_count + 18):
+        for i in range(start_count, start_count + 9 * 2):
             print("start")
             print(i + 1)
             current_row = i // 9
             # path, current_state = a_star(start[current_row:], goal[current_row:], i + 1, current_row)
-            path, current_state = a_star(start, goal, deal_count * 2, deal_count * 2 + 4, i + 1 - start_count, current_row)
+            path, current_state = a_star(start, goal, deal_count * 2, deal_count * 2 + 4, i + 1 - start_count,
+                                         current_row)
             # path, current_state = a_star(start, goal, i + 1, current_row)
 
             if path:
@@ -235,7 +236,7 @@ def get_path(start, goal):
                     (i, j) for i, row in enumerate(start) for j, val in enumerate(row) if val == blank_num)
 
                 for step, (row, col) in enumerate(path):
-                    row+=deal_count * 2
+                    row += deal_count * 2
                     start[row][col], start[zero_row][zero_col] = start[zero_row][zero_col], \
                         start[row][col]
                     zero_row, zero_col = row, col
@@ -261,7 +262,6 @@ def get_path(start, goal):
                     start[row][col]
                 zero_row, zero_col = row, col
                 step_indexs.append((row, col))
-
 
     end_time = time.time()
     print(f"{end_time - start_time}秒")
