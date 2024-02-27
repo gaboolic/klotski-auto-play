@@ -26,11 +26,15 @@ def manhattan_distance(state, goal, target_count, current_row):
     distance = 0
     for i in range(len(state)):
         for j in range(len(state[i])):
+            current_num = state[i][j]
             # if state[i][j] != blank_num and state[i][j] <= target_count:
-            if state[i][j] != blank_num:
+            if current_num != blank_num:
                 row, col = divmod(state[i][j] - 1, 9)
                 row -= current_row
+
                 distance += abs(i - row) + abs(j - col)
+                if current_num == target_count:
+                    distance += 2 * (abs(i - row) + abs(j - col))
             # elif state[i][j] == blank_num:
             #     row, col = current_row, 8
             #     distance += abs(i - row) + abs(j - col)
@@ -103,7 +107,7 @@ def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, cu
 
     while not frontier.empty():
         iterations += 1
-        if iterations > 100000:
+        if iterations > 10000000:
             print("Exceeded maximum iterations. No solution found.")
             return None
 
