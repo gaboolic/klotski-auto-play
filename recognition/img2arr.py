@@ -7,6 +7,7 @@ from tensorflow import keras
 # 加载模型
 model = keras.models.load_model('recognition/lenet5.keras')
 judge_number_model = keras.models.load_model('recognition/train_number.keras')
+lenet5_20_model = keras.models.load_model('recognition/lenet5_20.keras')
 
 
 def judge_number(image):
