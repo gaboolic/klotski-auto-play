@@ -19,8 +19,9 @@ def judge_number(image):
     predictions = judge_number_model.predict(image)
     # 打印预测结果
     predicted_label = np.argmax(predictions[0])
-    cv2.imwrite(f'temp/judge_number_{predicted_label}_{time.time()}.jpg', resize_img)  # 保存图像
+    # cv2.imwrite(f'temp/judge_number_{predicted_label}_{time.time()}.jpg', resize_img)  # 保存图像
     return predicted_label
+
 
 def one_img(image):
     # 计算平均像素值
@@ -44,7 +45,7 @@ def one_img(image):
     predictions = model.predict(image)
     # 打印预测结果
     predicted_label = np.argmax(predictions[0])
-    cv2.imwrite(f'temp/predict_{predicted_label}_{time.time()}.jpg', resize_img)  # 保存图像
+    # cv2.imwrite(f'temp/predict_{predicted_label}_{time.time()}.jpg', resize_img)  # 保存图像
     return predicted_label
 
 
@@ -101,7 +102,7 @@ def img2arr(image,split_count):
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # 对图像进行二值化处理
-    ret, image = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY )
+    ret, image = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY)
     # ret, image = cv2.threshold(image, 254, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     # 对图像进行形态学操作（可选）
@@ -123,7 +124,7 @@ def img2arr(image,split_count):
             half_size = 28  # 因为我们想要20像素，所以取一半的大小
             # 提取中心数字图像
             number_image = image[center_y: center_y + half_size, center_x - 14: center_x + 28]
-            cv2.imwrite(f'temp/number__{i}_{j}.jpg', number_image)  # 保存图像
+            # cv2.imwrite(f'temp/number__{i}_{j}.jpg', number_image)  # 保存图像
 
             # 存储提取的中心数字图像
             number_images.append(number_image)
@@ -141,7 +142,7 @@ def img2arr(image,split_count):
         judge_number_res = judge_number(part2)
         if judge_number_res:
             num2 = one_img(part2)
-            number = number*10 + num2
+            number = number * 10 + num2
         numbers.append(number)
-        cv2.imwrite(f'temp/number_{number}.jpg', num_img)  # 保存图像
+        # cv2.imwrite(f'temp/number_{number}.jpg', num_img)  # 保存图像
     return numbers

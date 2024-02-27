@@ -17,7 +17,7 @@ from klotski import klotski99
 # image = cv2.imread('errgameimg/game2.jpg')
 # image = cv2.imread('gameimg/55/55.jpg')
 # image = cv2.imread('game2.jpg')
-image = cv2.imread('gameimg/99/99_lyr.jpg')
+image = cv2.imread('gameimg/99/99_qi.jpg')
 
 recognition_start_time = time.time()
 numbers = img2arr.img2arr(image, 9)
