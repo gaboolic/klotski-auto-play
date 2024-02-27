@@ -45,9 +45,10 @@ print("打印移动")
 current_state = numbers
 for path in paths:
     index = path
+    print(index)
+
     zero_index = current_state.index(99)
     current_state[zero_index] = current_state[index]
     current_state[index] = 99
-    print(index)
     print(current_state)
 print(current_state)

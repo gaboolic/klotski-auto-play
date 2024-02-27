@@ -237,7 +237,7 @@ def get_path(start, goal):
                 step_indexs.append((row, col))
 
     print("2次二分")
-    path, current_state = a_star_split(start, goal, 2,36, 28, 27)
+    path, current_state = a_star_split(start, goal, 2,36, 18, 27)
     print("2次二分结束")
     if path:
         current_state = [row.copy() for row in start]  # 初始化当前状态为初始状态
@@ -295,7 +295,7 @@ def get_path(start, goal):
                 current_state[row][col], current_state[zero_row][zero_col] = current_state[zero_row][zero_col], \
                     current_state[row][col]
                 zero_row, zero_col = row, col
-                step_indexs.append((row + 7, col))
+                step_indexs.append((row + 6, col))
 
         start = current_state
     end_time = time.time()
