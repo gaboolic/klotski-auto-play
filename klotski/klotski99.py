@@ -5,7 +5,7 @@ from queue import PriorityQueue
 blank_num = 0
 
 
-def manhattan_distance_split(state, goal,remove_row_count, total_count, pre_count, zero_index_count):
+def manhattan_distance_split(state, goal, remove_row_count, total_count, pre_count, zero_index_count):
     distance = 0
     for i in range(len(state)):
         for j in range(len(state[i])):
@@ -36,8 +36,6 @@ def manhattan_distance(state, goal, target_count, current_row):
     return distance
 
 
-
-
 def manhattan_distance_bottom(state, goal):
     distance = 0
     for i in range(len(state)):
@@ -63,7 +61,9 @@ def a_star_split(start, goal, remove_row_count, total_count, pre_count, zero_ind
         flattened_current_state = [val for row in current_state for val in row]
         flattened_goal_state = [val for row in goal for val in row]
 
-        if sorted(flattened_current_state[:total_count])[:pre_count] == [0]+flattened_goal_state[:pre_count-1] and 0 in flattened_current_state[:zero_index_count]:
+        if sorted(flattened_current_state[:total_count])[:pre_count] == [0] + flattened_goal_state[
+                                                                              :pre_count - 1] and 0 in flattened_current_state[
+                                                                                                       :zero_index_count]:
             return path, current_state
 
         visited.add(tuple(map(tuple, current_state)))
@@ -80,7 +80,8 @@ def a_star_split(start, goal, remove_row_count, total_count, pre_count, zero_ind
                     new_state[zero_row][zero_col]
 
                 if tuple(map(tuple, new_state)) not in visited:
-                    distance = manhattan_distance_split(new_state, goal, remove_row_count,total_count, pre_count, zero_index_count)
+                    distance = manhattan_distance_split(new_state, goal, remove_row_count, total_count, pre_count,
+                                                        zero_index_count)
                     cost = len(path) + 1 + distance
                     frontier.put((cost, new_state, path + [(new_row, new_col)]))
 
@@ -122,8 +123,6 @@ def a_star(start, goal, target_count, current_row):
                     frontier.put((cost, new_state, path + [(new_row, new_col)]))
 
     return None
-
-
 
 
 def a_star_bottom(start, goal, target_count):
@@ -185,7 +184,7 @@ def get_path(start, goal):
 
     print("二分")
     # path, current_state = a_star_split(start, goal,0, 54, 27, 36)
-    path, current_state = a_star_split(start, goal,0, 80, 40, 40)
+    path, current_state = a_star_split(start, goal, 0, 80, 40, 40)
     print("二分结束")
     if path:
         current_state = [row.copy() for row in start]  # 初始化当前状态为初始状态
@@ -237,7 +236,7 @@ def get_path(start, goal):
                 step_indexs.append((row, col))
 
     print("2次二分")
-    path, current_state = a_star_split(start, goal, 2,36, 18, 27)
+    path, current_state = a_star_split(start, goal, 2, 36, 18, 27)
     print("2次二分结束")
     if path:
         current_state = [row.copy() for row in start]  # 初始化当前状态为初始状态
@@ -256,12 +255,7 @@ def get_path(start, goal):
         print(i + 1)
         print(start)
         current_row = i // 9
-        print("18, 63 start and goal:")
-        print(start[current_row:7])
-        print(goal[current_row:7])
         path, current_state = a_star(start, goal, i + 1, current_row)
-
-        # path, current_state = a_star(start, goal, i + 1, current_row)
 
         if path:
             current_state = [row.copy() for row in start]  # 初始化当前状态为初始状态
@@ -275,10 +269,6 @@ def get_path(start, goal):
                 step_indexs.append((row, col))
 
     print("已经拼好前n-2层")
-
-    start = start[-3:]
-    print("start")
-    print(start)
 
     for i in range(27):
         print("start")
@@ -300,6 +290,7 @@ def get_path(start, goal):
         start = current_state
     end_time = time.time()
     print(f"{end_time - start_time}秒")
+    print(start)
     return step_indexs
 
 
