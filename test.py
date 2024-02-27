@@ -16,8 +16,8 @@ from klotski import klotski99
 # 读取图像
 # image = cv2.imread('errgameimg/game2.jpg')
 # image = cv2.imread('gameimg/55/55.jpg')
-# image = cv2.imread('game2.jpg')
-image = cv2.imread('gameimg/99/99_wu_doren.jpg')
+image = cv2.imread('game2.jpg')
+# image = cv2.imread('gameimg/99/99_wu_doren.jpg')
 # image = cv2.imread('gameimg/99/99_xiandai_shengdan.jpg') # 卡在二分
 # image = cv2.imread('gameimg/99/99lan.jpg') # 卡50
 # image = cv2.imread('gameimg/99/99_huang_jianke.jpg')

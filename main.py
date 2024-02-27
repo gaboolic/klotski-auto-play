@@ -66,7 +66,7 @@ def async_click(executor, d, x, y):
     executor.submit(d.click, x, y)
     thread_end_time = time.perf_counter()
     print(f"线程执行时间{thread_end_time-thread_start_time}秒")
-    sleep_time = 0.05
+    sleep_time = 0.001
     time.sleep(sleep_time)
     print(f"点击sleep时间{sleep_time}秒")
 
