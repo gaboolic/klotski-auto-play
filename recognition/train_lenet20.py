@@ -32,8 +32,8 @@ for i in range(11):
         image = cv2.resize(image, (28, 28))  # 调整大小为28x28
 
         # 随机平移图像
-        tx_range = 2  # x轴平移范围
-        ty_range = 2  # y轴平移范围
+        tx_range = 1  # x轴平移范围
+        ty_range = 1  # y轴平移范围
         image = translate_image(image, tx_range, ty_range)
 
         image = image / 255.0  # 归一化

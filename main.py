@@ -134,7 +134,7 @@ def do_flow(executor):
         steps = klotski.get_path(numbers)
     klotski_end_time = time.time()
     print(f"数字华容道求解耗时:{klotski_end_time - klotski_start_time}秒")
-    print(f"移动次数:len(steps)")
+    print(f"移动次数:{len(steps)}")
     print(steps)
     if not steps:
         print("klotski steps为空")
@@ -143,8 +143,6 @@ def do_flow(executor):
     click_indexs = []
     for step in steps:
         click_index = step
-
-        print(click_index)
         click_indexs.append(click_index)
 
     print(f"点击次数:{len(click_indexs)},click_indexs:{click_indexs}")

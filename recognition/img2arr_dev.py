@@ -5,23 +5,9 @@ import numpy as np
 from tensorflow import keras
 
 # 加载模型
-model = keras.models.load_model('recognition/lenet5.keras')
-judge_number_model = keras.models.load_model('recognition/train_number.keras')
+
 lenet5_20_model = keras.models.load_model('recognition/lenet5_20.keras')
 
-
-def judge_number(image):
-    resize_img = cv2.resize(image, (28, 28))  # 调整大小为28x28
-    image = resize_img / 255.0  # 归一化
-    # 添加批次维度
-    image = np.expand_dims(image, axis=0)
-
-    # 进行预测
-    predictions = judge_number_model.predict(image)
-    # 打印预测结果
-    predicted_label = np.argmax(predictions[0])
-    # cv2.imwrite(f'temp/judge_number_{predicted_label}_{time.time()}.jpg', resize_img)  # 保存图像
-    return predicted_label
 
 
 def one_img(image):
@@ -43,7 +29,7 @@ def one_img(image):
     image = np.expand_dims(image, axis=0)
 
     # 进行预测
-    predictions = model.predict(image)
+    predictions = lenet5_20_model.predict(image)
     # 打印预测结果
     predicted_label = np.argmax(predictions[0])
     cv2.imwrite(f'temp/predict_{predicted_label}_{time.time()}.jpg', resize_img)  # 保存图像
@@ -139,11 +125,10 @@ def img2arr(image,split_count):
         part2 = num_img[:, split_point:]
 
         num1 = one_img(part1)
+        num2 = one_img(part2)
         number = num1
-        judge_number_res = judge_number(part2)
-        if judge_number_res:
-            num2 = one_img(part2)
+        if num2 < 10:
             number = number * 10 + num2
         numbers.append(number)
-        cv2.imwrite(f'temp/number_{number}_{time.time()}.jpg', num_img)  # 保存图像
+        cv2.imwrite(f'temp/number_{number}.jpg', num_img)  # 保存图像
     return numbers
