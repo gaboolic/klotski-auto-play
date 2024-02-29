@@ -21,19 +21,38 @@ def manhattan_distance_split(state, goal, remove_row_count, total_count, pre_cou
 
 
 # 计算曼哈顿距离
-def manhattan_distance(state, goal, target_count, current_row, current_num_distance_rate):
+def manhattan_distance(state, goal, target_count, target_num, current_row, current_num_distance_rate):
     # current_row = 0
     distance = 0
     for i in range(len(state)):
         for j in range(len(state[i])):
             current_num = state[i][j]
-            # if state[i][j] != blank_num and state[i][j] <= target_count:
-            if current_num != blank_num:
+            # if state[i][j] != blank_num and state[i][j] <= target_num:
+            if state[i][j] != blank_num:
                 row, col = divmod(state[i][j] - 1, 9)
                 row -= current_row
 
                 distance += abs(i - row) + abs(j - col)
-                if current_num == target_count:
+                if current_num == target_num:
+                    distance += current_num_distance_rate * (abs(i - row) + abs(j - col))
+            # elif state[i][j] == blank_num:
+            #     row, col = current_row, 8
+            #     distance += abs(i - row) + abs(j - col)
+    return distance
+
+
+def manhattan_distance_target(state, goal, target_count, target_num, current_row, current_num_distance_rate):
+    # current_row = 0
+    distance = 0
+    for i in range(len(state)):
+        for j in range(len(state[i])):
+            current_num = state[i][j]
+            if state[i][j] != blank_num and state[i][j] <= target_num:
+                row, col = divmod(state[i][j] - 1, 9)
+                row -= current_row
+
+                distance += abs(i - row) + abs(j - col)
+                if current_num == target_num:
                     distance += current_num_distance_rate * (abs(i - row) + abs(j - col))
             # elif state[i][j] == blank_num:
             #     row, col = current_row, 8
@@ -94,7 +113,8 @@ def a_star_split(ori_start, ori_goal, remove_row_count, total_count, pre_count, 
 
 
 # A*算法
-def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, current_row, current_num_distance_rate):
+def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, target_num, current_row,
+           current_num_distance_rate):
     start = ori_start[row_index_start:row_index_end]
     goal = ori_goal[row_index_start:row_index_end]
 
@@ -129,7 +149,6 @@ def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, cu
             last_row_num = current_row * 9
 
             if 0 <= new_row < len(start) and 0 <= new_col < 9 and current_state[new_row][new_col] > last_row_num:
-                target_num = current_state[new_row][new_col]
                 # if target_num >= target_count or new_col in [6, 7, 8]:
                 if True:
                     new_state = [row.copy() for row in current_state]
@@ -137,8 +156,13 @@ def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, cu
                         new_state[zero_row][zero_col]
 
                     if tuple(map(tuple, new_state)) not in visited:
-                        distance = manhattan_distance(new_state, goal, target_count, current_row,
-                                                      current_num_distance_rate)
+                        if current_num_distance_rate == 0:
+                            distance = manhattan_distance(new_state, goal, target_count, target_num, current_row,
+                                                          current_num_distance_rate)
+                        else:
+                            distance = manhattan_distance_target(new_state, goal, target_count, target_num, current_row,
+                                                                 current_num_distance_rate)
+                        # cost = math.sqrt(len(path)) + 1 + distance
                         cost = len(path) + 1 + distance
                         frontier.put((cost, new_state, path + [(new_row, new_col)]))
 
@@ -241,12 +265,13 @@ def get_path(start, goal):
             current_row = i // 9
             # path, current_state = a_star(start[current_row:], goal[current_row:], i + 1, current_row)
             path, current_state, star_result = a_star(start, goal, deal_count * 2, deal_count * 2 + 4,
-                                                      i + 1 - start_count,
-                                                      current_row, 2)
+                                                      i + 1 - start_count, i + 1,
+                                                      current_row, 0)
+
             if not star_result:
                 path, current_state, star_result = a_star(start, goal, deal_count * 2, deal_count * 2 + 4,
-                                                          i + 1 - start_count,
-                                                          current_row, 100)
+                                                          i + 1 - start_count, i + 1,
+                                                          current_row, 10)
 
             if not star_result:
                 return None
@@ -308,8 +333,6 @@ def get_path_warp(start):
     print(given_array)
 
     paths = get_path(numbers_2d, given_array)
-    if paths is None:
-        return None
     indexs = []
     for path in paths:
         index = path[0] * 9 + path[1]
@@ -343,14 +366,12 @@ def get_path_warp(start):
 # # print(path_warp)
 # # print("get_path_warp done")
 #
-# numbers_2d = [[1, 2, 3, 5, 15, 16, 17, 8, 9], [10, 12, 13, 4, 7, 23, 26, 6, 18], [19, 11, 21, 22, 14, 25, 60, 27, 36],
-#               [37, 30, 33, 20, 32, 24, 45, 43, 34], [49, 29, 28, 31, 41, 51, 42, 63, 54],
-#               [38, 65, 47, 39, 61, 69, 0, 52, 35], [46, 56, 48, 40, 50, 59, 70, 44, 62],
-#               [55, 64, 66, 57, 67, 78, 68, 72, 80], [73, 58, 74, 75, 76, 77, 53, 79, 71]]
+# start = [[1, 4, 14, 8, 3, 2, 16, 15, 7], [10, 12, 27, 13, 33, 0, 36, 6, 9], [19, 28, 11, 20, 5, 22, 24, 18, 17], [37, 38, 31, 30, 23, 32, 26, 25, 35], [49, 46, 21, 40, 42, 51, 34, 44, 45], [47, 29, 48, 58, 50, 59, 43, 52, 54], [39, 73, 57, 67, 60, 41, 70, 53, 62], [56, 74, 66, 76, 68, 78, 69, 72, 63], [55, 64, 75, 65, 77, 79, 61, 71, 80]]
+#
 # goal = [[1, 2, 3, 4, 5, 6, 7, 8, 9], [10, 11, 12, 13, 14, 15, 16, 17, 18], [19, 20, 21, 22, 23, 24, 25, 26, 27],
 #         [28, 29, 30, 31, 32, 33, 34, 35, 36], [37, 38, 39, 40, 41, 42, 43, 44, 45],
 #         [46, 47, 48, 49, 50, 51, 52, 53, 54], [55, 56, 57, 58, 59, 60, 61, 62, 63],
 #         [64, 65, 66, 67, 68, 69, 70, 71, 72], [73, 74, 75, 76, 77, 78, 79, 80, 0]]
-# # paths = get_path(start, goal)
-# # print(paths)
-# # print("get_path done")
+# paths = get_path(start, goal)
+# print(paths)
+# print("get_path done")
