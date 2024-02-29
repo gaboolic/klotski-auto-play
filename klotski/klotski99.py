@@ -308,6 +308,8 @@ def get_path_warp(start):
     print(given_array)
 
     paths = get_path(numbers_2d, given_array)
+    if paths is None:
+        return None
     indexs = []
     for path in paths:
         index = path[0] * 9 + path[1]

@@ -147,8 +147,14 @@ def do_flow(executor):
         steps = klotski99.get_path_warp(numbers)
     else:
         steps = klotski.get_path(numbers)
+
     klotski_end_time = time.time()
     print(f"数字华容道求解耗时:{klotski_end_time - klotski_start_time}秒")
+    if steps is None:
+        print("数字华容道求解失败")
+        cancel(d)
+        time.sleep(6)
+        return
     print(f"移动次数:{len(steps)}")
     print(steps)
     if not steps:
