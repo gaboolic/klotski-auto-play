@@ -16,7 +16,7 @@ from klotski import klotski99
 # 读取图像
 # image = cv2.imread('gameimg/55/55.jpg')
 # image = cv2.imread('game2.jpg')
-image = cv2.imread('errgameimg/game99.jpg')
+image = cv2.imread('errgameimg/number_a8efaa8d-e86a-47f8-b976-98b475580cd1.jpg')
 
 # image = cv2.imread('gameimg/99/99_wu_doren.jpg')
 # image = cv2.imread('gameimg/99/99_xiandai_shengdan.jpg') # 卡在二分
@@ -24,7 +24,8 @@ image = cv2.imread('errgameimg/game99.jpg')
 # image = cv2.imread('gameimg/99/99_huang_jianke.jpg')
 
 recognition_start_time = time.time()
-numbers = img2arr_dev.img2arr(image, 9)
+# numbers = img2arr_dev.img2arr(image, 9)
+numbers = img2arr.img2arr(image, 9)
 recognition_end_time = time.time()
 print(f"图片识别耗时{recognition_end_time - recognition_start_time}秒")
 

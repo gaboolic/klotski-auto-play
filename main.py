@@ -1,4 +1,5 @@
 import concurrent
+import os
 import threading
 import time
 import uuid
@@ -45,7 +46,8 @@ def get_point(index, split_count):
     ratio_x = (center_x) / width
     ratio_y = (center_y) / height
 
-    return ratio_x, ratio_y
+    # return ratio_x, ratio_y
+    return center_x, center_y
 
 
 print("start connect")
@@ -70,21 +72,32 @@ print(d.settings)
 #     time.sleep(sleep_time)
 #     print(f"点击sleep时间{sleep_time}秒")
 def async_click(executor, d, x, y):
-    d.click(x,y)
+    click_start_time = time.perf_counter()
+    # d.click(x, y)
+    os.system(f'adb shell input tap {x} {y}')
+    click_end_time = time.perf_counter()
+    # print(f"click时间{click_end_time - click_start_time}秒")
+
+
+def cancel(d):
+    sx1, sy1 = 500, 500
+    sx2, sy2 = 600, 600
+    ex1, ey1 = 500, 500
+    ex2, ey2 = 600, 600
+    d().gesture((sx1, sy1), (sx2, sy2), (ex1, ey1), (ex2, ey2))
 
 
 def do_flow(executor):
-
     # 点npc
     npc_start_time = time.time()
     print("点npc")
-    # d.click(0.526, 0.28)
-    async_click(executor,d,0.526, 0.28)
+    d.click(0.526, 0.28)
+    # async_click(executor,d,0.526, 0.28)
     time.sleep(0.5)
 
     # d1
-    # d.click(0.526, 0.28)
-    async_click(executor,d, 0.526, 0.28)
+    d.click(0.526, 0.28)
+    # async_click(executor,d, 0.526, 0.28)
     time.sleep(0.5)
 
     d.click(0.526, 0.28)
@@ -125,6 +138,8 @@ def do_flow(executor):
         print(sorted_numbers)
         new_uuid = uuid.uuid4()
         cv2.imwrite(f'./errgameimg/number_{new_uuid}.jpg', image)  # 保存图像
+        cancel(d)
+        time.sleep(6)
         return
 
     klotski_start_time = time.time()
@@ -153,19 +168,20 @@ def do_flow(executor):
         print(f"click_index:{click_index}")
         print(ratio_x, ratio_y)
         d.click(ratio_x, ratio_y)
-        async_click(executor,d, ratio_x, ratio_y)
+        async_click(executor, d, ratio_x, ratio_y)
     click_end_time = time.time()
     print(f"点击耗时:{click_end_time - click_start_time}秒")
     print(f"点击次数:{len(click_indexs)}")
+    time.sleep(6)
+    # 点xia
+    d.click(0.296, 0.497)
 
 
 while True:
     one_flow_start_time = time.time()
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         do_flow(executor)
-    time.sleep(6)
-    # 点xia
-    d.click(0.296, 0.497)
+
     # 暂停程序执行1秒
     time.sleep(3)
     one_flow_end_time = time.time()
