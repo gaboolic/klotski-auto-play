@@ -162,7 +162,8 @@ def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, ta
                         else:
                             distance = manhattan_distance_target(new_state, goal, target_count, target_num, current_row,
                                                                  current_num_distance_rate)
-                        cost = math.sqrt(len(path)) + distance
+                        # cost = math.sqrt(len(path)) + 1 + distance
+                        cost = len(path) + 1 + distance
                         frontier.put((cost, new_state, path + [(new_row, new_col)]))
 
     return None
