@@ -10,7 +10,7 @@ def manhattan_distance_split(state, goal, remove_row_count, total_count, pre_cou
     for i in range(len(state)):
         for j in range(len(state[i])):
             current = state[i][j]
-            if current != blank_num :
+            if current != blank_num:
                 row, col = divmod(state[i][j] - 1, 9)
                 row -= remove_row_count
                 distance += abs(i - row) + abs(j - col)
@@ -66,8 +66,8 @@ def a_star_split(ori_start, ori_goal, remove_row_count, total_count, pre_count, 
         flattened_current_state = [val for row in current_state for val in row]
         flattened_goal_state = [val for row in goal for val in row]
 
-        if sorted(flattened_current_state[:total_count])[:pre_count+1] == [0] + flattened_goal_state[
-                                                                              :pre_count] and 0 in flattened_current_state[
+        if sorted(flattened_current_state[:total_count])[:pre_count + 1] == [0] + flattened_goal_state[
+                                                                                  :pre_count] and 0 in flattened_current_state[
                                                                                                        :zero_index_count]:
             return path, current_state
 
@@ -94,7 +94,7 @@ def a_star_split(ori_start, ori_goal, remove_row_count, total_count, pre_count, 
 
 
 # A*算法
-def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, current_row,current_num_distance_rate):
+def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, current_row, current_num_distance_rate):
     start = ori_start[row_index_start:row_index_end]
     goal = ori_goal[row_index_start:row_index_end]
 
@@ -109,7 +109,7 @@ def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, cu
         iterations += 1
         if iterations > 100000:
             print("Exceeded maximum iterations. No solution found.")
-            return [],[],False
+            return [], [], False
 
         _, current_state, path = frontier.get()
 
@@ -137,7 +137,8 @@ def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, cu
                         new_state[zero_row][zero_col]
 
                     if tuple(map(tuple, new_state)) not in visited:
-                        distance = manhattan_distance(new_state, goal, target_count, current_row,current_num_distance_rate)
+                        distance = manhattan_distance(new_state, goal, target_count, current_row,
+                                                      current_num_distance_rate)
                         cost = len(path) + 1 + distance
                         frontier.put((cost, new_state, path + [(new_row, new_col)]))
 
@@ -239,8 +240,9 @@ def get_path(start, goal):
             print(i + 1)
             current_row = i // 9
             # path, current_state = a_star(start[current_row:], goal[current_row:], i + 1, current_row)
-            path, current_state, star_result = a_star(start, goal, deal_count * 2, deal_count * 2 + 4, i + 1 - start_count,
-                                         current_row, 2)
+            path, current_state, star_result = a_star(start, goal, deal_count * 2, deal_count * 2 + 4,
+                                                      i + 1 - start_count,
+                                                      current_row, 2)
             if not star_result:
                 path, current_state, star_result = a_star(start, goal, deal_count * 2, deal_count * 2 + 4,
                                                           i + 1 - start_count,
