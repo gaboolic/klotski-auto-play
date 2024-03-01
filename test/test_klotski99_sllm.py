@@ -1,7 +1,7 @@
 import time
 
 from klotski import klotski99
-from klotski import klotski99_dev
+from klotski import klotski99_sllm
 import unittest
 
 
@@ -13,7 +13,7 @@ class TestKlotski99Dev(unittest.TestCase):
                          28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51,
                          52, 53,
                          54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77,
-                         78, 79,
+                         78, 79, 80,
                          0]
 
         start_time = time.time()
@@ -22,7 +22,7 @@ class TestKlotski99Dev(unittest.TestCase):
         numbers_2d = [numbers[i:i + 9] for i in range(0, len(numbers), 9)]
         expect_result_2d = [expect_result[i:i + 9] for i in range(0, len(expect_result), 9)]
 
-        steps = klotski99_dev.get_path(numbers_2d, expect_result_2d)
+        steps = klotski99_sllm.get_path(numbers_2d, expect_result_2d)
         end_time = time.time()
 
         print(f"耗时{end_time - start_time}秒")
@@ -33,9 +33,9 @@ class TestKlotski99Dev(unittest.TestCase):
         current_state = numbers
         for path in steps:
             index = path
-            zero_index = current_state.index(99)
+            zero_index = current_state.index(0)
             current_state[zero_index] = current_state[index]
-            current_state[index] = 99
+            current_state[index] = 0
         print(current_state)
 
         self.assertEqual(current_state, expect_result)
