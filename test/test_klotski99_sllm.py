@@ -32,7 +32,7 @@ class TestKlotski99Dev(unittest.TestCase):
         print("打印移动")
         current_state = numbers
         for path in steps:
-            index = path
+            index = path[0] * 9 + path[1]
             zero_index = current_state.index(0)
             current_state[zero_index] = current_state[index]
             current_state[index] = 0

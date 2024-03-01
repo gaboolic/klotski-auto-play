@@ -139,7 +139,7 @@ def do_flow(executor):
         new_uuid = uuid.uuid4()
         cv2.imwrite(f'./errgameimg/number_{new_uuid}.jpg', image)  # 保存图像
         cancel(d)
-        time.sleep(6)
+        time.sleep(3)
         return
 
     klotski_start_time = time.time()
