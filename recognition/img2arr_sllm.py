@@ -5,7 +5,7 @@ import numpy as np
 from tensorflow import keras
 
 # 加载模型
-lenet5_20_model = keras.models.load_model('recognition/lenet5_20.keras')
+lenet5_100_model = keras.models.load_model('recognition/lenet5_100.keras')
 
 
 def one_img(image):
@@ -27,10 +27,10 @@ def one_img(image):
     image = np.expand_dims(image, axis=0)
 
     # 进行预测
-    predictions = lenet5_20_model.predict(image)
+    predictions = lenet5_100_model.predict(image)
     # 打印预测结果
     predicted_label = np.argmax(predictions[0])
-    # cv2.imwrite(f'temp/predict_{predicted_label}_{time.time()}.jpg', resize_img)  # 保存图像
+    cv2.imwrite(f'temp/predict_{predicted_label}_{time.time()}.jpg', resize_img)  # 保存图像
     return predicted_label
 
 

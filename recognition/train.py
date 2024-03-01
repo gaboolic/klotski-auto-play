@@ -12,7 +12,7 @@ test_images = test_images / 255.0
 
 
 # 定义LeNet-5模型结构
-def LeNet5(input_shape=(28, 28, 1), num_classes=20):
+def LeNet5(input_shape=(28, 28, 1), num_classes=100):
     model = models.Sequential()
 
     model.add(layers.Conv2D(6, kernel_size=(5, 5), strides=(1, 1), activation='tanh', input_shape=input_shape,
@@ -47,4 +47,4 @@ model.compile(optimizer='adam',
 model.fit(train_images, train_labels, epochs=5)
 
 # 保存模型
-model.save('lenet5_20.keras')
+model.save('lenet5_100.keras')

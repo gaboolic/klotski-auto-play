@@ -32,9 +32,9 @@ for i in range(100):
         image = cv2.resize(image, (28, 28))  # 调整大小为28x28
 
         # 随机平移图像
-        tx_range = 1  # x轴平移范围
-        ty_range = 1  # y轴平移范围
-        image = translate_image(image, tx_range, ty_range)
+        tx_range = 0  # x轴平移范围
+        ty_range = 0  # y轴平移范围
+        # image = translate_image(image, tx_range, ty_range)
 
         image = image / 255.0  # 归一化
         train_images.append(image)
@@ -47,7 +47,7 @@ train_labels = np.array(train_labels)
 model = keras.models.load_model('lenet5_100.keras')
 
 # 训练模型
-model.fit(train_images, train_labels, epochs=60)
+model.fit(train_images, train_labels, epochs=600)
 
 # 保存模型
 model.save('lenet5_100.keras')
