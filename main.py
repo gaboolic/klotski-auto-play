@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 from recognition import img2arr
 from klotski import klotski
-from klotski import klotski99
+from klotski import klotski99,klotski99_sllm
 # from tensorflow import keras
 import tensorflow.python.keras as keras
 
@@ -144,7 +144,7 @@ def do_flow(executor):
 
     klotski_start_time = time.time()
     if split_count == 9:
-        steps = klotski99.get_path_warp(numbers)
+        steps = klotski99_sllm.get_path_warp(numbers)
     else:
         steps = klotski.get_path(numbers)
 
@@ -167,12 +167,13 @@ def do_flow(executor):
         click_indexs.append(click_index)
 
     print(f"点击次数:{len(click_indexs)},click_indexs:{click_indexs}")
+    print(f"开始点击")
 
     click_start_time = time.time()
     for click_index in click_indexs:
         ratio_x, ratio_y = get_point(click_index, split_count)
-        print(f"click_index:{click_index}")
-        print(ratio_x, ratio_y)
+        # print(f"click_index:{click_index}")
+        # print(ratio_x, ratio_y)
         d.click(ratio_x, ratio_y)
         async_click(executor, d, ratio_x, ratio_y)
     click_end_time = time.time()
