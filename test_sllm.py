@@ -66,3 +66,6 @@ if current_state == expect_result:
     print("移动正确")
 else:
     print("移动错误")
+
+# 86.10537004470825秒
+# 移动步数:1361
