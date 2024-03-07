@@ -60,14 +60,18 @@ def manhattan_distance_target(state, goal, target_count, target_num, current_row
     return distance
 
 
-def manhattan_distance_bottom(state, goal):
+def manhattan_distance_bottom(state, goal, target_num):
     distance = 0
     for i in range(len(state)):
         for j in range(len(state[i])):
+            current_num = state[i][j]
             if state[i][j] != blank_num:
                 row, col = divmod(state[i][j] - 1, 9)
                 row -= 6
-                distance += abs(i - row) + abs(j - col)
+                dis = abs(i - row) + abs(j - col)
+                distance += dis
+                if current_num == target_num:
+                    distance += dis * 10
     return distance
 
 
@@ -195,6 +199,8 @@ def a_star_bottom(start, goal, target_count):
         if flattened_current_state[:target_count] == flattened_goal[:target_count]:
             return path, current_state
 
+        target_num = flattened_goal[target_count - 1]
+
         visited.add(tuple(map(tuple, current_state)))
 
         zero_row, zero_col = next(
@@ -202,14 +208,15 @@ def a_star_bottom(start, goal, target_count):
 
         for move in moves:
             new_row, new_col = zero_row + move[0], zero_col + move[1]
-
-            if 0 <= new_row < len(start) and 0 <= new_col < 9:
+            # 2 > 0 3 > 1 5>2 7>3
+            min_col = (target_count - 1) // 2
+            if 0 <= new_row < len(start) and 0 <= new_col < 9 and new_col >= min_col:
                 new_state = [row.copy() for row in current_state]
                 new_state[zero_row][zero_col], new_state[new_row][new_col] = new_state[new_row][new_col], \
                     new_state[zero_row][zero_col]
 
                 if tuple(map(tuple, new_state)) not in visited:
-                    distance = manhattan_distance_bottom(new_state, goal)
+                    distance = manhattan_distance_bottom(new_state, goal, target_num)
                     cost = len(path) + 1 + distance
                     frontier.put((cost, new_state, path + [(new_row, new_col)]))
 

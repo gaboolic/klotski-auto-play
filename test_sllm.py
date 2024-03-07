@@ -14,7 +14,7 @@ from klotski import klotski99_sllm
 # d.click(0.178, 0.49)
 
 # 读取图像
-image = cv2.imread('gameimg/sllm/50dc712c173b97dc822b6ba06ec1d190.jpg')
+image = cv2.imread('gameimg/sllm/WechatIMG702.jpg')
 
 recognition_start_time = time.time()
 # numbers = img2arr_dev.img2arr(image, 9)
@@ -41,11 +41,11 @@ else:
     print("识别的图像正确")
 
 expect_result = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-                 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53,
-                 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
-                 0]
+                 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54,
+                 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72,
+                 73, 74, 75, 76, 77, 78, 79, 80, 0]
 
-# 将一维数组转换为二维数组
+# 将一维数组转换为二维数组Ï
 numbers_2d = [numbers[i:i + 9] for i in range(0, len(numbers), 9)]
 expect_result_2d = [expect_result[i:i + 9] for i in range(0, len(expect_result), 9)]
 paths = klotski99_sllm.get_path(numbers_2d, expect_result_2d)
@@ -55,15 +55,11 @@ print(paths)
 print("打印移动")
 current_state = numbers
 for path in paths:
-    index = path
-    # print(index)
-
+    index = path[0] * 9 + path[1]
     zero_index = current_state.index(0)
     current_state[zero_index] = current_state[index]
     current_state[index] = 0
-    # print(current_state)
 print(current_state)
-
 
 if current_state == expect_result:
     print("移动正确")
