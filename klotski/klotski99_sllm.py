@@ -10,7 +10,7 @@ def manhattan_distance_split(state, goal, remove_row_count, total_count, pre_cou
     for i in range(len(state)):
         for j in range(len(state[i])):
             current = state[i][j]
-            if current != blank_num and state[i][j] <= remove_row_count * 9 + pre_count:
+            if current != blank_num:
                 row, col = divmod(state[i][j] - 1, 9)
                 row -= remove_row_count
                 distance +=  abs(row - i)* abs(row - i) + abs(col-j)
@@ -127,7 +127,7 @@ def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, ta
 
     while not frontier.empty():
         iterations += 1
-        if iterations > 100000:
+        if iterations > 50000:
             print("Exceeded maximum iterations. No solution found.")
             return [], [], False
 
