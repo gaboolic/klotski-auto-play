@@ -14,7 +14,8 @@ from klotski import klotski99_sllm
 # d.click(0.178, 0.49)
 
 # 读取图像
-image = cv2.imread('gameimg/sllm/WechatIMG702.jpg')
+# image = cv2.imread('gameimg/sllm/WechatIMG702.jpg')
+image = cv2.imread('gameimg/sllm/WechatIMG723.jpg')
 
 recognition_start_time = time.time()
 # numbers = img2arr_dev.img2arr(image, 9)
