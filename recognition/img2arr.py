@@ -1,6 +1,7 @@
 import time
 
 import cv2
+import hashlib
 import numpy as np
 from tensorflow import keras
 
@@ -50,7 +51,20 @@ def one_img(image):
     return predicted_label
 
 
-def img2arr(image,split_count):
+def calculate_image_hash(image):
+    # 计算像素平均值
+    avg_pixel_value = image.mean()
+
+    # 根据像素平均值生成哈希值
+    hash_value = ''.join(['1' if pixel >= avg_pixel_value else '0' for pixel in image.flatten()])
+
+    # 使用MD5哈希算法对哈希值进行进一步处理
+    md5_hash = hashlib.md5(hash_value.encode()).hexdigest()
+
+    return md5_hash
+
+
+def img2arr(image, split_count):
     # 获取图像宽度和高度
     height, width, _ = image.shape
 
@@ -145,5 +159,6 @@ def img2arr(image,split_count):
             num2 = one_img(part2)
             number = number * 10 + num2
         numbers.append(number)
-        cv2.imwrite(f'temp_number/number_{number}_{time.time()}.jpg', num_img)  # 保存图像
+        hash_v = calculate_image_hash(image)
+        cv2.imwrite(f'temp_number/number_{number}_{hash_v}.jpg', num_img)  # 保存图像
     return numbers

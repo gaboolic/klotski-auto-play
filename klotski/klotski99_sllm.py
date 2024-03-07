@@ -13,7 +13,7 @@ def manhattan_distance_split(state, goal, remove_row_count, total_count, pre_cou
             if current != blank_num:
                 row, col = divmod(state[i][j] - 1, 9)
                 row -= remove_row_count
-                distance +=  abs(row - i)* abs(row - i) + abs(col-j)
+                distance += abs(row - i) * abs(row - i) + abs(col - j)
             # elif current == blank_num:
             #     row, col = remove_row_count, 8
             #     distance += abs(i - row) + abs(j - col)
@@ -117,7 +117,8 @@ def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, ta
            current_num_distance_rate):
     start = ori_start[row_index_start:row_index_end]
     goal = ori_goal[row_index_start:row_index_end]
-
+    # print("a_star")
+    # print(start)
     moves = [(0, -1), (0, 1), (-1, 0), (1, 0)]  # 左、右、上、下
     frontier = PriorityQueue()
     frontier.put((blank_num, start, []))
@@ -145,7 +146,6 @@ def a_star(ori_start, ori_goal, row_index_start, row_index_end, target_count, ta
             goal_num = flattened_goal[i]
             if current_num == goal_num:
                 eq_count += 1
-
 
         visited.add(tuple(map(tuple, current_state)))
 
@@ -262,17 +262,18 @@ def get_path(start, goal):
             step_indexs.append((row, col))
     print(start)
 
-    for deal_count in range(3):
+    for deal_count in range(6):
         print("deal_count二分")
         # 前36个 前18个
-        path, current_state = a_star_split(start, goal, deal_count * 2, 9 * 4, 9 * 2, 9 * 4)
+        # (ori_start, ori_goal, remove_row_count, total_count, pre_count, zero_index_count
+        path, current_state = a_star_split(start, goal, deal_count, 9 * 3, 9 * 2, 9 * 3)
         print("deal_count二分结束")
         if path:
             zero_row, zero_col = next(
                 (i, j) for i, row in enumerate(start) for j, val in enumerate(row) if val == blank_num)
 
             for step, (row, col) in enumerate(path):
-                row += deal_count * 2
+                row += deal_count
                 start[row][col], start[zero_row][zero_col] = start[zero_row][zero_col], \
                     start[row][col]
                 zero_row, zero_col = row, col
@@ -281,33 +282,35 @@ def get_path(start, goal):
 
         print("deal_count二分")
         # 前27个 前18个
-        path, current_state = a_star_split(start, goal, deal_count * 2, 9 * 3, 9 * 2, 9 * 3)
+        path, current_state = a_star_split(start, goal, deal_count, 9 * 3, 9 * 2, 9 * 3)
         print("deal_count二分结束")
         if path:
             zero_row, zero_col = next(
                 (i, j) for i, row in enumerate(start) for j, val in enumerate(row) if val == blank_num)
 
             for step, (row, col) in enumerate(path):
-                row += deal_count * 2
+                row += deal_count
                 start[row][col], start[zero_row][zero_col] = start[zero_row][zero_col], \
                     start[row][col]
                 zero_row, zero_col = row, col
                 step_indexs.append((row, col))
         print(start)
 
-        start_count = deal_count * 9 * 2
+        start_count = deal_count * 9
         # 执行A*算法
-        for i in range(start_count, start_count + 9 * 2):
+        for i in range(start_count, start_count + 9):
             print("start")
             print(i + 1)
             current_row = i // 9
             # path, current_state = a_star(start[current_row:], goal[current_row:], i + 1, current_row)
-            path, current_state, star_result = a_star(start, goal, deal_count * 2, deal_count * 2 + 3,
+            # ori_start, ori_goal, row_index_start, row_index_end, target_count, target_num, current_row,
+            #            current_num_distance_rate)
+            path, current_state, star_result = a_star(start, goal, deal_count, deal_count + 3,
                                                       i + 1 - start_count, i + 1,
                                                       current_row, 0)
 
             if not star_result:
-                path, current_state, star_result = a_star(start, goal, deal_count * 2, deal_count * 2 + 3,
+                path, current_state, star_result = a_star(start, goal, deal_count, deal_count + 3,
                                                           i + 1 - start_count, i + 1,
                                                           current_row, 10)
 
@@ -319,7 +322,7 @@ def get_path(start, goal):
                     (i, j) for i, row in enumerate(start) for j, val in enumerate(row) if val == blank_num)
 
                 for step, (row, col) in enumerate(path):
-                    row += deal_count * 2
+                    row += deal_count
                     start[row][col], start[zero_row][zero_col] = start[zero_row][zero_col], \
                         start[row][col]
                     zero_row, zero_col = row, col

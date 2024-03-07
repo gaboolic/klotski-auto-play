@@ -4,7 +4,7 @@ import cv2
 import uiautomator2 as u2
 
 from recognition import img2arr, img2arr_sllm
-from klotski import klotski99
+from klotski import klotski99_sllm
 
 # d = u2.connect() # connect to device
 # d = u2.connect_wifi('192.168.1.3') # connect to device
@@ -14,7 +14,7 @@ from klotski import klotski99
 # d.click(0.178, 0.49)
 
 # 读取图像
-image = cv2.imread('gameimg/sllm/WechatIMG702.jpg')
+image = cv2.imread('gameimg/sllm/50dc712c173b97dc822b6ba06ec1d190.jpg')
 
 recognition_start_time = time.time()
 # numbers = img2arr_dev.img2arr(image, 9)
@@ -48,7 +48,7 @@ expect_result = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
 # 将一维数组转换为二维数组
 numbers_2d = [numbers[i:i + 9] for i in range(0, len(numbers), 9)]
 expect_result_2d = [expect_result[i:i + 9] for i in range(0, len(expect_result), 9)]
-paths = klotski99.get_path(numbers_2d, expect_result_2d)
+paths = klotski99_sllm.get_path(numbers_2d, expect_result_2d)
 print(f"移动步数:{len(paths)}")
 print(paths)
 
